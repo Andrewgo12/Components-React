@@ -107,7 +107,7 @@ export default function TestAllPage() {
     try {
       results.useToast = typeof toast === 'function'
       results.useIsMobile = typeof isMobile === 'boolean'
-      results.useErrorHandler = typeof errorHandler === 'function'
+      results.useErrorHandler = typeof errorHandler.handleError === 'function'
       results.useLiveEffects = effectsRef !== null
     } catch {
       results.hooks = false
@@ -162,7 +162,7 @@ export default function TestAllPage() {
     try {
       throw new Error("Test error for error handler")
     } catch (error) {
-      errorHandler(error as Error)
+      errorHandler.handleError(error as Error)
     }
   }
 
