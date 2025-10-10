@@ -186,7 +186,7 @@ export function Topbar({
                 variant="ghost" 
                 size="sm" 
                 className="h-7 w-7 p-0"
-                onClick={() => {})
+                onClick={() => {}}
               >
                 <Icons.RedoIcon className="w-3.5 h-3.5" />
               </Button>
