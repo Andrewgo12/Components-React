@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 
 interface ErrorBoundaryState {
   hasError: boolean
-  error?: Error
+  error?: Error | undefined
 }
 
 interface ErrorBoundaryProps {

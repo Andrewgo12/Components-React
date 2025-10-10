@@ -182,7 +182,7 @@ function useToast() {
   }, []) // Remove state dependency to prevent unnecessary re-renders
 
   const dismiss = React.useCallback((toastId?: string) => {
-    dispatch({ type: 'DISMISS_TOAST', ...(toastId ? { toastId } : {}) })
+    dispatch({ type: 'DISMISS_TOAST', ...(toastId && { toastId }) })
   }, [])
 
   return React.useMemo(() => ({

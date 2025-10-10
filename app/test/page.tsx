@@ -33,10 +33,9 @@ import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } 
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { Toaster } from "@/components/ui/toaster"
 import { useToast } from "@/hooks/use-toast"
-import { useLiveEffects } from "@/hooks/use-live-effects"
 import { useErrorHandler } from "@/hooks/use-error-handler"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { generateId, formatDate } from "@/lib/utils"
+import { generateId } from "@/lib/utils"
 import { validateColor, sanitizeString, validateComponentId } from "@/lib/validation"
 import { ErrorBoundary } from "@/components/error-boundary"
 import { ThemeProvider } from "@/components/theme-provider"
@@ -53,25 +52,23 @@ export default function TestPage() {
   
   const { toast } = useToast()
   const isMobile = useIsMobile()
-  const errorHandler = useErrorHandler()
-  const effectsRef = useLiveEffects({ glow: { enabled: true, intensity: 50, color: '#3b82f6' } })
+  const { handleError } = useErrorHandler()
 
   const testAllFunctions = () => {
     const id = generateId()
-    const formattedDate = formatDate(new Date())
     const isValidColor = validateColor("#ff0000")
     const sanitized = sanitizeString("<script>alert('test')</script>")
     const isValidId = validateComponentId("test-id-123")
     
     toast({
       title: "Test Complete ✅",
-      description: `All functions working: ID=${id.slice(0,6)}, Valid=${isValidColor}, Clean=${sanitized.length > 0}`,
+      description: `All functions working: ID=${id.slice(0,6)}, Valid=${isValidColor}, Clean=${sanitized.length > 0}, ValidId=${isValidId}`,
     })
     
     try {
       throw new Error("Test error")
     } catch (error) {
-      errorHandler(error as Error)
+      handleError(error as Error)
     }
   }
 
