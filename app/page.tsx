@@ -45,8 +45,8 @@ export default function EditorPage() {
           })
         }
       }
-    } catch (error) {
-      console.error('Failed to load autosaved project:', error)
+    } catch {
+      // Failed to load autosaved project
     }
   }, [toast])
 
@@ -122,12 +122,12 @@ export default function EditorPage() {
     })
   }, [components.length, toast])
 
-  const handleUpdateComponent = (id: string, updates: any) => {
+  const handleUpdateComponent = useCallback((id: string, updates: any) => {
     setComponents(components.map((c) => (c.id === id ? { ...c, ...updates } : c)))
     if (selectedComponent?.id === id) {
       setSelectedComponent({ ...selectedComponent, ...updates })
     }
-  }
+  }, [components, selectedComponent])
 
   const handleDeleteComponent = useCallback(() => {
     if (!selectedComponent) return
@@ -151,7 +151,7 @@ export default function EditorPage() {
     const componentHeight = 100
 
     const currentPos = selectedComponent.position || { x: 0, y: 0 }
-    let newPosition = { ...currentPos }
+    const newPosition = { ...currentPos }
 
     switch (alignment) {
       case "left":

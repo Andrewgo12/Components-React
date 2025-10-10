@@ -68,8 +68,7 @@ const useFormField = () => {
       formMessageId: `${id}-form-item-message`,
       ...fieldState,
     }
-  } catch (error) {
-    console.error('Form field error:', error)
+  } catch {
     throw new Error('Failed to initialize form field')
   }
 }

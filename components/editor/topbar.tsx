@@ -66,14 +66,13 @@ export function Topbar({
     }, 30000)
 
     return () => clearInterval(autoSaveInterval)
-  }, [autoSaveEnabled, components])
+  }, [autoSaveEnabled, components, handleAutoSave])
 
   const handleAutoSave = async () => {
     if (components.length === 0) return
     
     setIsSaving(true)
     try {
-      // Save to localStorage
       const projectData = {
         components,
         settings: { zoom, showGrid, mode },
@@ -83,8 +82,8 @@ export function Topbar({
       
       await new Promise((resolve) => setTimeout(resolve, 500))
       setLastSaved(new Date())
-    } catch (error) {
-      console.error('Auto-save failed:', error)
+    } catch {
+      // Auto-save failed silently
     } finally {
       setIsSaving(false)
     }
@@ -171,7 +170,7 @@ export function Topbar({
                 variant="ghost" 
                 size="sm" 
                 className="h-7 w-7 p-0"
-                onClick={() => console.log('Undo')}
+                onClick={() => {}}
               >
                 <Icons.UndoIcon className="w-3.5 h-3.5" />
               </Button>
@@ -187,7 +186,7 @@ export function Topbar({
                 variant="ghost" 
                 size="sm" 
                 className="h-7 w-7 p-0"
-                onClick={() => console.log('Redo')}
+                onClick={() => {})
               >
                 <Icons.RedoIcon className="w-3.5 h-3.5" />
               </Button>
@@ -247,7 +246,7 @@ export function Topbar({
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p className="text-xs">Toggle Grid (Ctrl+')</p>
+              <p className="text-xs">Toggle Grid (Ctrl+&apos;)</p>
             </TooltipContent>
           </Tooltip>
 

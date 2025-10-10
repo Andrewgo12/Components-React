@@ -26,7 +26,7 @@ export function Inspector({ selectedComponent, onUpdateComponent }: InspectorPro
 
   const updateProp = (path: string[], value: any) => {
     if (!selectedComponent?.id || !path.length) {
-      console.warn('Invalid component or path for prop update')
+      // Invalid component or path for prop update
       return
     }
 
@@ -44,7 +44,7 @@ export function Inspector({ selectedComponent, onUpdateComponent }: InspectorPro
       // Update component immediately for real-time preview
       onUpdateComponent(selectedComponent.id, { props: newProps })
     } catch (error) {
-      console.error('Failed to update component prop:', error)
+      // Failed to update component prop
     }
   }
 
