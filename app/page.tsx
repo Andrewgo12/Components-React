@@ -10,14 +10,14 @@ import { useToast } from "@/hooks/use-toast"
 import { ErrorBoundary } from "@/components/error-boundary"
 import { validateComponentType } from "@/lib/validation"
 
-import type { ComponentProps } from "@/types"
+
 
 export default function EditorPage() {
   const [selectedComponent, setSelectedComponent] = useState<any>(null)
   const [components, setComponents] = useState<any[]>([])
   const [zoom, setZoom] = useState(100)
   const [showGrid, setShowGrid] = useState(true)
-  const [showRulers, setShowRulers] = useState(true)
+
   const [mode, setMode] = useState<"design" | "preview">("design")
   const [history, setHistory] = useState<any[][]>([[]])
   const [historyIndex, setHistoryIndex] = useState(0)

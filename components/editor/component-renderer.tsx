@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { MagicButton } from "@/components/ui/magic-button"
+
 import { useLiveEffects } from "@/hooks/use-live-effects"
 import * as Icons from "@/components/icons"
 
@@ -13,7 +13,6 @@ interface ComponentRendererProps {
   component: any
   isSelected: boolean
   onSelect: () => void
-  onUpdate: (updates: any) => void
   onDelete: () => void
   mode: "design" | "preview"
 }
@@ -22,7 +21,6 @@ export function ComponentRenderer({
   component,
   isSelected,
   onSelect,
-  onUpdate,
   onDelete,
   mode,
 }: ComponentRendererProps) {

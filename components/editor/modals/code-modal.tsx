@@ -21,7 +21,7 @@ export function CodeModal({ open, onOpenChange, components }: CodeModalProps) {
       return "// No hay componentes para generar código\n// Agrega componentes al canvas para ver el código generado"
     }
 
-    const imports = new Set(['React'])
+    // const imports = new Set(['React'])
     const componentCode = components.map(component => {
       const { type, props, position } = component
       

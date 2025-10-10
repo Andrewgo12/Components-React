@@ -15,7 +15,7 @@ interface PerformanceModalProps {
 export function PerformanceModal({ open, onOpenChange }: PerformanceModalProps) {
   const [renderTime, setRenderTime] = useState(12)
   const [memory, setMemory] = useState(45)
-  const [components, setComponents] = useState(8)
+  const [components] = useState(8)
   const [fps, setFps] = useState(60)
   const [chartData, setChartData] = useState<number[]>([])
 
@@ -31,9 +31,10 @@ export function PerformanceModal({ open, onOpenChange }: PerformanceModalProps) 
 
       return () => clearInterval(interval)
     }
+    return undefined
   }, [open])
 
-  const getScoreColor = (score: number) => {
+  const getScoreColor = (score: number): string => {
     if (score >= 80) return "text-success"
     if (score >= 60) return "text-warning"
     return "text-destructive"

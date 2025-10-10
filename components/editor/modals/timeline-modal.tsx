@@ -21,8 +21,8 @@ interface Keyframe {
 
 export function TimelineModal({ open, onOpenChange }: TimelineModalProps) {
   const [isPlaying, setIsPlaying] = useState(false)
-  const [duration, setDuration] = useState(2.5)
-  const [keyframes, setKeyframes] = useState<Keyframe[]>([
+  const [duration] = useState(2.5)
+  const [keyframes] = useState<Keyframe[]>([
     { time: 0, scale: 1, opacity: 0, rotate: 0, x: 0 },
     { time: 0.25, scale: 1.2, opacity: 0.5, rotate: 0, x: 0 },
     { time: 0.5, scale: 1, opacity: 1, rotate: 180, x: 0 },

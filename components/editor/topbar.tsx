@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import * as Icons from "@/components/icons"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { CodeModal } from "./modals/code-modal"
 import { ProjectModal } from "./modals/project-modal"
 import { ShortcutsModal } from "./modals/shortcuts-modal"
@@ -53,22 +53,12 @@ export function Topbar({
   const [showPerformanceModal, setShowPerformanceModal] = useState(false)
   const [showAccessibilityModal, setShowAccessibilityModal] = useState(false)
   const [showExportModal, setShowExportModal] = useState(false)
-  const [autoSaveEnabled, setAutoSaveEnabled] = useState(true)
+  const [autoSaveEnabled] = useState(true)
   const [lastSaved, setLastSaved] = useState<Date | null>(null)
   const [isSaving, setIsSaving] = useState(false)
   const { toast } = useToast()
 
-  useEffect(() => {
-    if (!autoSaveEnabled) return
-
-    const autoSaveInterval = setInterval(() => {
-      handleAutoSave()
-    }, 30000)
-
-    return () => clearInterval(autoSaveInterval)
-  }, [autoSaveEnabled, components, handleAutoSave])
-
-  const handleAutoSave = async () => {
+  const handleAutoSave = useCallback(async () => {
     if (components.length === 0) return
     
     setIsSaving(true)
@@ -87,9 +77,17 @@ export function Topbar({
     } finally {
       setIsSaving(false)
     }
-  }
+  }, [components, zoom, showGrid, mode])
+
+  useEffect(() => {
+    if (!autoSaveEnabled) return
+
+    const autoSaveInterval = setInterval(handleAutoSave, 30000)
+    return () => clearInterval(autoSaveInterval)
+  }, [autoSaveEnabled, handleAutoSave])
 
   const handleSave = async () => {
+
     setIsSaving(true)
     try {
       const projectData = {

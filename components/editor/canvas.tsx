@@ -156,7 +156,7 @@ export function Canvas({
                       component={component}
                       isSelected={selectedComponent?.id === component.id}
                       onSelect={() => !component.locked && onSelectComponent(component)}
-                      onUpdate={(updates) => onUpdateComponent(component.id, updates)}
+
                       onDelete={() => onDeleteComponent(component.id)}
                       mode={mode}
                     />

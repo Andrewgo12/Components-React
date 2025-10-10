@@ -7,7 +7,7 @@ export function useLiveEffects(effects: any) {
 
   useEffect(() => {
     const element = elementRef.current
-    if (!element) return
+    if (!element) return undefined
 
     // Apply shimmer effect
     if (effects?.shimmer?.enabled) {
@@ -38,6 +38,7 @@ export function useLiveEffects(effects: any) {
       element.addEventListener('click', handleClick)
       return () => element.removeEventListener('click', handleClick)
     }
+    return undefined
   }, [effects])
 
   return elementRef

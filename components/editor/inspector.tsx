@@ -8,7 +8,7 @@ import { Slider } from "@/components/ui/slider"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { Button } from "@/components/ui/button"
-import { ChevronDown, Sparkles, Zap, Palette, Box, Droplets, Snowflake, Layers, Sun, Moon } from "lucide-react"
+import { ChevronDown, Sparkles, Sun, Moon } from "lucide-react"
 import { useState } from "react"
 
 interface InspectorProps {
@@ -26,22 +26,21 @@ export function Inspector({ selectedComponent, onUpdateComponent }: InspectorPro
 
   const updateProp = (path: string[], value: any) => {
     if (!selectedComponent?.id || !path.length) {
-      // Invalid component or path for prop update
       return
     }
 
     try {
       const newProps = { ...selectedComponent.props }
-      let current = newProps
+      let current: any = newProps
 
       for (let i = 0; i < path.length - 1; i++) {
-        if (!current[path[i]]) current[path[i]] = {}
-        current = current[path[i]]
+        const key = path[i]
+        if (key && !current[key]) current[key] = {}
+        if (key) current = current[key]
       }
 
-      current[path[path.length - 1]] = value
-      
-      // Update component immediately for real-time preview
+      const lastKey = path[path.length - 1]
+      if (lastKey) current[lastKey] = value
       onUpdateComponent(selectedComponent.id, { props: newProps })
     } catch (error) {
       // Failed to update component prop
@@ -156,7 +155,7 @@ export function Inspector({ selectedComponent, onUpdateComponent }: InspectorPro
                       </Label>
                       <Slider
                         value={[selectedComponent.props.effects?.glow?.intensity || 50]}
-                        onValueChange={([value]) => updateEffect('glow', 'intensity', value)}
+                        onValueChange={(value) => updateEffect('glow', 'intensity', value[0])}
                         min={0}
                         max={100}
                         step={5}
@@ -594,7 +593,7 @@ export function Inspector({ selectedComponent, onUpdateComponent }: InspectorPro
                   <Label className="text-xs">Hover Scale: {selectedComponent.props.animation.hoverScale}x</Label>
                   <Slider
                     value={[selectedComponent.props.animation.hoverScale * 100]}
-                    onValueChange={([value]) => updateProp(["animation", "hoverScale"], value / 100)}
+                    onValueChange={([value]) => updateProp(["animation", "hoverScale"], (value || 100) / 100)}
                     min={100}
                     max={120}
                     step={1}
