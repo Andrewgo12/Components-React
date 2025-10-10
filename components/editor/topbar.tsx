@@ -142,23 +142,37 @@ export function Topbar({
         <div className="flex items-center gap-1">
           {/* Zoom Controls */}
           <div className="flex items-center gap-1 bg-muted rounded-md p-0.5">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-6 w-6 p-0 text-xs"
-              onClick={() => onZoomChange(Math.max(25, zoom - 25))}
-            >
-              -
-            </Button>
-            <span className="text-xs px-2 min-w-[3rem] text-center">{zoom}%</span>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-6 w-6 p-0 text-xs"
-              onClick={() => onZoomChange(Math.min(200, zoom + 25))}
-            >
-              +
-            </Button>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-6 w-6 p-0 text-xs"
+                  onClick={() => onZoomChange(Math.max(25, zoom - 25))}
+                >
+                  -
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="text-xs">Reducir zoom (Ctrl+-)</p>
+              </TooltipContent>
+            </Tooltip>
+            <span className="text-xs px-2 min-w-[3rem] text-center font-mono">{zoom}%</span>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-6 w-6 p-0 text-xs"
+                  onClick={() => onZoomChange(Math.min(200, zoom + 25))}
+                >
+                  +
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="text-xs">Aumentar zoom (Ctrl+=)</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
 
           <div className="w-px h-4 bg-border mx-1" />

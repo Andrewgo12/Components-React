@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback, useRef } from "react"
+import { useState, useEffect, useCallback, useRef, useMemo } from "react"
 import { Topbar } from "@/components/editor/topbar"
 import { Sidebar } from "@/components/editor/sidebar"
 import { Canvas } from "@/components/editor/canvas"
@@ -8,6 +8,7 @@ import { Inspector } from "@/components/editor/inspector"
 import { Toaster } from "@/components/ui/toaster"
 import { useToast } from "@/hooks/use-toast"
 import { ErrorBoundary } from "@/components/error-boundary"
+import { ClientOnly } from "@/components/client-only"
 import { validateComponentType } from "@/lib/validation"
 
 
@@ -102,25 +103,28 @@ export default function EditorPage() {
       return
     }
 
-    const componentCount = components.length
-    const newComponent = {
-      id: `${type}-${Date.now()}`,
-      type,
-      name: `${type.charAt(0).toUpperCase() + type.slice(1)} ${componentCount + 1}`,
-      props: getDefaultProps(type),
-      position: { x: 100 + componentCount * 20, y: 100 + componentCount * 20 },
-      locked: false,
-      hidden: false,
-    }
-    setComponents(prev => [...prev, newComponent])
-    setSelectedComponent(newComponent)
-
-    toast({
-      title: "Componente agregado",
-      description: `${newComponent.name} agregado al canvas`,
-      variant: "default",
+    setComponents(prev => {
+      const componentCount = prev.length
+      const newComponent = {
+        id: `${type}-${Date.now()}`,
+        type,
+        name: `${type.charAt(0).toUpperCase() + type.slice(1)} ${componentCount + 1}`,
+        props: getDefaultProps(type),
+        position: { x: 100 + componentCount * 20, y: 100 + componentCount * 20 },
+        locked: false,
+        hidden: false,
+      }
+      setSelectedComponent(newComponent)
+      
+      toast({
+        title: "Componente agregado",
+        description: `${newComponent.name} agregado al canvas`,
+        variant: "default",
+      })
+      
+      return [...prev, newComponent]
     })
-  }, [components.length, toast])
+  }, [toast])
 
   const handleUpdateComponent = useCallback((id: string, updates: any) => {
     setComponents(components.map((c) => (c.id === id ? { ...c, ...updates } : c)))
@@ -323,45 +327,60 @@ export default function EditorPage() {
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [toast, selectedComponent, setZoom, setShowGrid, handleUndo, handleRedo])
 
+  const memoizedTopbar = useMemo(() => (
+    <Topbar
+      zoom={zoom}
+      onZoomChange={setZoom}
+      mode={mode}
+      onModeChange={setMode}
+      components={components}
+      selectedComponent={selectedComponent}
+      onAlignComponents={handleAlignComponents}
+      onDuplicateComponent={handleDuplicateComponent}
+      onDeleteComponent={handleDeleteComponent}
+      onToggleLock={handleToggleLock}
+      onToggleVisibility={handleToggleVisibility}
+      showGrid={showGrid}
+      onToggleGrid={() => setShowGrid(!showGrid)}
+    />
+  ), [zoom, mode, components, selectedComponent, showGrid, handleAlignComponents, handleDuplicateComponent, handleDeleteComponent, handleToggleLock, handleToggleVisibility])
+
+  const memoizedSidebar = useMemo(() => (
+    <Sidebar onAddComponent={handleAddComponent} />
+  ), [handleAddComponent])
+
+  const memoizedCanvas = useMemo(() => (
+    <Canvas
+      components={components}
+      selectedComponent={selectedComponent}
+      onSelectComponent={setSelectedComponent}
+      onUpdateComponent={handleUpdateComponent}
+      onDeleteComponent={handleDeleteComponent}
+      zoom={zoom}
+      showGrid={showGrid}
+      mode={mode}
+    />
+  ), [components, selectedComponent, zoom, showGrid, mode, handleUpdateComponent, handleDeleteComponent])
+
+  const memoizedInspector = useMemo(() => (
+    <Inspector selectedComponent={selectedComponent} onUpdateComponent={handleUpdateComponent} />
+  ), [selectedComponent, handleUpdateComponent])
+
   return (
     <ErrorBoundary>
-      <div className="h-screen flex flex-col bg-gradient-to-br from-muted/30 via-background to-muted/20">
-        <Topbar
-          zoom={zoom}
-          onZoomChange={setZoom}
-          mode={mode}
-          onModeChange={setMode}
-          components={components}
-          selectedComponent={selectedComponent}
-          onAlignComponents={handleAlignComponents}
-          onDuplicateComponent={handleDuplicateComponent}
-          onDeleteComponent={handleDeleteComponent}
-          onToggleLock={handleToggleLock}
-          onToggleVisibility={handleToggleVisibility}
-          showGrid={showGrid}
-          onToggleGrid={() => setShowGrid(!showGrid)}
+      <ClientOnly fallback={<div className="h-screen flex items-center justify-center">Cargando...</div>}>
+        <div className="h-screen flex flex-col bg-gradient-to-br from-muted/30 via-background to-muted/20">
+          {memoizedTopbar}
 
-        />
+          <div className="flex-1 flex overflow-hidden">
+            {memoizedSidebar}
+            {memoizedCanvas}
+            {memoizedInspector}
+          </div>
 
-        <div className="flex-1 flex overflow-hidden">
-          <Sidebar onAddComponent={handleAddComponent} />
-
-          <Canvas
-            components={components}
-            selectedComponent={selectedComponent}
-            onSelectComponent={setSelectedComponent}
-            onUpdateComponent={handleUpdateComponent}
-            onDeleteComponent={handleDeleteComponent}
-            zoom={zoom}
-            showGrid={showGrid}
-            mode={mode}
-          />
-
-          <Inspector selectedComponent={selectedComponent} onUpdateComponent={handleUpdateComponent} />
+          <Toaster />
         </div>
-
-        <Toaster />
-      </div>
+      </ClientOnly>
     </ErrorBoundary>
   )
 }

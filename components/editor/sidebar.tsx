@@ -134,25 +134,21 @@ export function Sidebar({ onAddComponent }: SidebarProps) {
   }
 
   const ComponentGrid = ({ components }: { components: any[] }) => (
-    <div className="grid grid-cols-3 gap-2">
-      {components.map((component, index) => (
-        <div
-          key={component.id}
-          className="animate-in fade-in zoom-in-95 duration-200"
-          style={{ animationDelay: `${index * 15}ms` }}
-        >
+    <div className="grid grid-cols-2 gap-1.5">
+      {components.map((component) => (
+        <div key={component.id}>
           <Tooltip>
             <TooltipTrigger asChild>
               <Card
-                className="p-2 cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105 group border-border/50"
+                className="p-1.5 cursor-pointer hover:bg-accent transition-colors group border-border/50"
                 onClick={() => onAddComponent(component.id)}
               >
                 <div
-                  className={`w-8 h-8 rounded-lg bg-gradient-to-br ${component.color} flex items-center justify-center mb-1.5 group-hover:scale-110 transition-transform shadow-md`}
+                  className={`w-6 h-6 rounded-md bg-gradient-to-br ${component.color} flex items-center justify-center mb-1 shadow-sm`}
                 >
-                  <component.icon className="w-4 h-4 text-white" />
+                  <component.icon className="w-3 h-3 text-white" />
                 </div>
-                <p className="text-[10px] font-medium text-foreground truncate leading-tight text-center">
+                <p className="text-[9px] font-medium text-foreground truncate leading-tight text-center">
                   {component.name}
                 </p>
               </Card>
@@ -168,9 +164,9 @@ export function Sidebar({ onAddComponent }: SidebarProps) {
 
   return (
     <TooltipProvider>
-      <aside className="w-[280px] glass-effect glass-effect-dark border-r shadow-premium flex flex-col animate-in fade-in slide-in-from-left-4 duration-300">
-        <div className="p-3 border-b">
-          <h2 className="text-sm font-semibold text-foreground mb-2">Componentes</h2>
+      <aside className="w-[240px] bg-background/95 backdrop-blur-sm border-r flex flex-col overflow-hidden">
+        <div className="p-2 border-b">
+          <h2 className="text-xs font-semibold text-foreground mb-2">Componentes</h2>
 
           <div className="relative">
             <Icons.SearchIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
