@@ -9,7 +9,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { useToast } from "@/hooks/use-toast"
 import { ErrorBoundary } from "@/components/error-boundary"
 import { validateComponentType } from "@/lib/validation"
-import { COMPONENT_TYPES, KEYBOARD_SHORTCUTS } from "@/lib/constants"
+
 import type { ComponentProps } from "@/types"
 
 export default function EditorPage() {
@@ -340,10 +340,7 @@ export default function EditorPage() {
           onToggleVisibility={handleToggleVisibility}
           showGrid={showGrid}
           onToggleGrid={() => setShowGrid(!showGrid)}
-          onUndo={handleUndo}
-          onRedo={handleRedo}
-          canUndo={historyIndex > 0}
-          canRedo={historyIndex < history.length - 1}
+
         />
 
         <div className="flex-1 flex overflow-hidden">
