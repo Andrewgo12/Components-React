@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { ComponentRenderer } from "./component-renderer"
+import { ComponentRenderer } from "./components-ren/component-renderer"
 import * as Icons from "@/components/icons"
 import { useState, useEffect } from "react"
 
@@ -114,8 +114,8 @@ export function Canvas({
             style={{ 
               transform: `scale(${zoom / 100})`, 
               transformOrigin: "top left",
-              width: `${10000 / zoom}%`,
-              height: `${10000 / zoom}%`
+              width: "800px",
+              height: "600px"
             }}
           >
             <div 
@@ -156,7 +156,6 @@ export function Canvas({
                       component={component}
                       isSelected={selectedComponent?.id === component.id}
                       onSelect={() => !component.locked && onSelectComponent(component)}
-
                       onDelete={() => onDeleteComponent(component.id)}
                       mode={mode}
                     />

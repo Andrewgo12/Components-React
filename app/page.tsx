@@ -110,7 +110,7 @@ export default function EditorPage() {
         type,
         name: `${type.charAt(0).toUpperCase() + type.slice(1)} ${componentCount + 1}`,
         props: getDefaultProps(type),
-        position: { x: 100 + componentCount * 20, y: 100 + componentCount * 20 },
+        position: { x: 200, y: 150 },
         locked: false,
         hidden: false,
       }
@@ -127,17 +127,22 @@ export default function EditorPage() {
   }, [toast])
 
   const handleUpdateComponent = useCallback((id: string, updates: any) => {
-    setComponents(components.map((c) => (c.id === id ? { ...c, ...updates } : c)))
+    setComponents(prev => prev.map((c) => (c.id === id ? { ...c, ...updates } : c)))
     if (selectedComponent?.id === id) {
-      setSelectedComponent({ ...selectedComponent, ...updates })
+      setSelectedComponent(prev => prev ? { ...prev, ...updates } : null)
     }
-  }, [components, selectedComponent])
+  }, [selectedComponent])
 
-  const handleDeleteComponent = useCallback(() => {
-    if (!selectedComponent) return
-    const component = components.find((c) => c.id === selectedComponent.id)
-    setComponents(components.filter((c) => c.id !== selectedComponent.id))
-    setSelectedComponent(null)
+  const handleDeleteComponent = useCallback((id?: string) => {
+    const componentId = id || selectedComponent?.id
+    if (!componentId) return
+    
+    const component = components.find((c) => c.id === componentId)
+    setComponents(prev => prev.filter((c) => c.id !== componentId))
+    
+    if (selectedComponent?.id === componentId) {
+      setSelectedComponent(null)
+    }
 
     toast({
       title: "Componente eliminado",
@@ -198,7 +203,7 @@ export default function EditorPage() {
       },
     }
 
-    setComponents([...components, newComponent])
+    setComponents(prev => [...prev, newComponent])
     setSelectedComponent(newComponent)
 
     toast({
@@ -206,7 +211,7 @@ export default function EditorPage() {
       description: `${selectedComponent.name} duplicado`,
       variant: "default",
     })
-  }, [selectedComponent, components, toast])
+  }, [selectedComponent, toast])
 
   const handleToggleLock = useCallback(() => {
     if (!selectedComponent) return
@@ -227,6 +232,57 @@ export default function EditorPage() {
       variant: "default",
     })
   }, [selectedComponent, handleUpdateComponent, toast])
+
+  const handleFlipHorizontal = useCallback(() => {
+    if (!selectedComponent) return
+    const currentTransform = selectedComponent.props.transform || { scaleX: 1, scaleY: 1 }
+    handleUpdateComponent(selectedComponent.id, { 
+      props: { 
+        ...selectedComponent.props, 
+        transform: { ...currentTransform, scaleX: currentTransform.scaleX * -1 }
+      }
+    })
+    toast({ description: "🔄 Elemento volteado horizontalmente", variant: "default" })
+  }, [selectedComponent, handleUpdateComponent, toast])
+
+  const handleMoveForward = useCallback(() => {
+    if (!selectedComponent) return
+    const currentIndex = components.findIndex(c => c.id === selectedComponent.id)
+    if (currentIndex < components.length - 1) {
+      const newComponents = [...components]
+      const temp = newComponents[currentIndex]
+      newComponents[currentIndex] = newComponents[currentIndex + 1]
+      newComponents[currentIndex + 1] = temp
+      setComponents(newComponents)
+      toast({ description: "⬆️ Elemento movido adelante", variant: "default" })
+    }
+  }, [selectedComponent, components, toast])
+
+  const handleMoveBackward = useCallback(() => {
+    if (!selectedComponent) return
+    const currentIndex = components.findIndex(c => c.id === selectedComponent.id)
+    if (currentIndex > 0) {
+      const newComponents = [...components]
+      const temp = newComponents[currentIndex]
+      newComponents[currentIndex] = newComponents[currentIndex - 1]
+      newComponents[currentIndex - 1] = temp
+      setComponents(newComponents)
+      toast({ description: "⬇️ Elemento movido atrás", variant: "default" })
+    }
+  }, [selectedComponent, components, toast])
+
+  const handleArrangeComponents = useCallback(() => {
+    if (components.length === 0) return
+    const arranged = components.map((comp, index) => ({
+      ...comp,
+      position: { 
+        x: 50 + (index % 4) * 180, 
+        y: 50 + Math.floor(index / 4) * 120 
+      }
+    }))
+    setComponents(arranged)
+    toast({ description: "📐 Elementos organizados automáticamente", variant: "default" })
+  }, [components, toast])
 
   const keyboardHandlers = useRef({
     duplicate: handleDuplicateComponent,
@@ -342,8 +398,14 @@ export default function EditorPage() {
       onToggleVisibility={handleToggleVisibility}
       showGrid={showGrid}
       onToggleGrid={() => setShowGrid(!showGrid)}
+      onUndo={handleUndo}
+      onRedo={handleRedo}
+      onFlipHorizontal={handleFlipHorizontal}
+      onMoveForward={handleMoveForward}
+      onMoveBackward={handleMoveBackward}
+      onArrangeComponents={handleArrangeComponents}
     />
-  ), [zoom, mode, components, selectedComponent, showGrid, handleAlignComponents, handleDuplicateComponent, handleDeleteComponent, handleToggleLock, handleToggleVisibility])
+  ), [zoom, mode, components, selectedComponent, showGrid, handleAlignComponents, handleDuplicateComponent, handleDeleteComponent, handleToggleLock, handleToggleVisibility, handleUndo, handleRedo, handleFlipHorizontal, handleMoveForward, handleMoveBackward, handleArrangeComponents])
 
   const memoizedSidebar = useMemo(() => (
     <Sidebar onAddComponent={handleAddComponent} />
@@ -386,7 +448,7 @@ export default function EditorPage() {
 }
 
 function getDefaultProps(type: string) {
-  const basePosition = { x: 100, y: 100 }
+  const basePosition = { x: 200, y: 150 }
   const defaults: Record<string, any> = {
     button: {
       text: "Click me",

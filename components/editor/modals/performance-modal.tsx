@@ -31,7 +31,6 @@ export function PerformanceModal({ open, onOpenChange }: PerformanceModalProps) 
 
       return () => clearInterval(interval)
     }
-    return undefined
   }, [open])
 
   const getScoreColor = (score: number): string => {

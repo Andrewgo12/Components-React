@@ -28,6 +28,12 @@ interface TopbarProps {
   onToggleVisibility?: () => void
   showGrid?: boolean
   onToggleGrid?: () => void
+  onUndo?: () => void
+  onRedo?: () => void
+  onFlipHorizontal?: () => void
+  onMoveForward?: () => void
+  onMoveBackward?: () => void
+  onArrangeComponents?: () => void
 }
 
 export function Topbar({
@@ -44,6 +50,12 @@ export function Topbar({
   onToggleVisibility,
   showGrid,
   onToggleGrid,
+  onUndo,
+  onRedo,
+  onFlipHorizontal,
+  onMoveForward,
+  onMoveBackward,
+  onArrangeComponents,
 }: TopbarProps) {
   const [showCodeModal, setShowCodeModal] = useState(false)
   const [showProjectModal, setShowProjectModal] = useState(false)
@@ -58,33 +70,31 @@ export function Topbar({
   const [isSaving, setIsSaving] = useState(false)
   const { toast } = useToast()
 
-  const handleAutoSave = useCallback(async () => {
-    if (components.length === 0) return
-    
-    setIsSaving(true)
-    try {
-      const projectData = {
-        components,
-        settings: { zoom, showGrid, mode },
-        timestamp: new Date().toISOString()
-      }
-      localStorage.setItem('componentsr-autosave', JSON.stringify(projectData))
-      
-      await new Promise((resolve) => setTimeout(resolve, 500))
-      setLastSaved(new Date())
-    } catch {
-      // Auto-save failed silently
-    } finally {
-      setIsSaving(false)
-    }
-  }, [components, zoom, showGrid, mode])
-
   useEffect(() => {
-    if (!autoSaveEnabled) return
+    if (!autoSaveEnabled || components.length === 0) return
+
+    const handleAutoSave = async () => {
+      setIsSaving(true)
+      try {
+        const projectData = {
+          components,
+          settings: { zoom, showGrid, mode },
+          timestamp: new Date().toISOString()
+        }
+        localStorage.setItem('componentsr-autosave', JSON.stringify(projectData))
+        
+        await new Promise((resolve) => setTimeout(resolve, 500))
+        setLastSaved(new Date())
+      } catch {
+        // Auto-save failed silently
+      } finally {
+        setIsSaving(false)
+      }
+    }
 
     const autoSaveInterval = setInterval(handleAutoSave, 30000)
     return () => clearInterval(autoSaveInterval)
-  }, [autoSaveEnabled, handleAutoSave])
+  }, [autoSaveEnabled, components, zoom, showGrid, mode])
 
   const handleSave = async () => {
 
@@ -182,7 +192,7 @@ export function Topbar({
                 variant="ghost" 
                 size="sm" 
                 className="h-7 w-7 p-0"
-                onClick={() => {}}
+                onClick={onUndo}
               >
                 <Icons.UndoIcon className="w-3.5 h-3.5" />
               </Button>
@@ -198,7 +208,7 @@ export function Topbar({
                 variant="ghost" 
                 size="sm" 
                 className="h-7 w-7 p-0"
-                onClick={() => {}}
+                onClick={onRedo}
               >
                 <Icons.RedoIcon className="w-3.5 h-3.5" />
               </Button>
@@ -262,6 +272,22 @@ export function Topbar({
             </TooltipContent>
           </Tooltip>
 
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="h-7 w-7 p-0" 
+                onClick={onArrangeComponents}
+              >
+                <Icons.LayoutIcon className="w-3.5 h-3.5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="text-xs">Organizar elementos</p>
+            </TooltipContent>
+          </Tooltip>
+
           {/* Alignment Controls */}
           {selectedComponent && (
             <>
@@ -312,6 +338,56 @@ export function Topbar({
                 </TooltipTrigger>
                 <TooltipContent>
                   <p className="text-xs">Alinear derecha</p>
+                </TooltipContent>
+              </Tooltip>
+
+              <div className="w-px h-4 bg-border mx-1" />
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-7 w-7 p-0"
+                    onClick={onFlipHorizontal}
+                  >
+                    <Icons.FlipHorizontalIcon className="w-3.5 h-3.5" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-xs">Voltear horizontal</p>
+                </TooltipContent>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-7 w-7 p-0"
+                    onClick={onMoveForward}
+                  >
+                    <Icons.ArrowUpIcon className="w-3.5 h-3.5" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-xs">Mover adelante</p>
+                </TooltipContent>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-7 w-7 p-0"
+                    onClick={onMoveBackward}
+                  >
+                    <Icons.ArrowDownIcon className="w-3.5 h-3.5" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-xs">Mover atrás</p>
                 </TooltipContent>
               </Tooltip>
 

@@ -42,7 +42,7 @@ export function Inspector({ selectedComponent, onUpdateComponent }: InspectorPro
       const lastKey = path[path.length - 1]
       if (lastKey) current[lastKey] = value
       onUpdateComponent(selectedComponent.id, { props: newProps })
-    } catch (error) {
+    } catch {
       // Failed to update component prop
     }
   }
@@ -593,7 +593,7 @@ export function Inspector({ selectedComponent, onUpdateComponent }: InspectorPro
                   <Label className="text-xs">Hover Scale: {selectedComponent.props.animation.hoverScale}x</Label>
                   <Slider
                     value={[selectedComponent.props.animation.hoverScale * 100]}
-                    onValueChange={([value]) => updateProp(["animation", "hoverScale"], (value || 100) / 100)}
+                    onValueChange={(values) => updateProp(["animation", "hoverScale"], (values?.[0] || 100) / 100)}
                     min={100}
                     max={120}
                     step={1}
