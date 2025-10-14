@@ -8,7 +8,7 @@ interface ComponentProps {
   getEffectStyles: () => any
 }
 
-export function renderEffectComponents(type: string, { props, getEffectClasses, getEffectStyles }: ComponentProps) {
+export function renderEffectComponents(type: string, { props: _props, getEffectClasses, getEffectStyles }: ComponentProps) {
   switch (type) {
     // Efectos básicos de luz y brillo
     case "effect-glow":
