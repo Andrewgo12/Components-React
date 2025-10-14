@@ -740,7 +740,7 @@ export function renderBasicComponents(type: string, { props, getEffectClasses, g
     case "code":
       return (
         <code className={`bg-gray-100 px-2 py-1 rounded font-mono text-sm ${getEffectClasses()}`} style={getEffectStyles()}>
-          console.log('Hello World')
+          console.log(&apos;Hello World&apos;)
         </code>
       )
 
@@ -748,7 +748,7 @@ export function renderBasicComponents(type: string, { props, getEffectClasses, g
       return (
         <pre className={`bg-gray-900 text-green-400 p-4 rounded font-mono text-sm overflow-x-auto ${getEffectClasses()}`} style={getEffectStyles()}>
 {`function example() {
-  return 'Hello World';
+  return &apos;Hello World&apos;;
 }`}
         </pre>
       )
