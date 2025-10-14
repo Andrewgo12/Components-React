@@ -22,7 +22,7 @@ interface ComponentRendererProps {
   mode: 'design' | 'preview'
 }
 
-function renderAllComponents(type: string, componentProps: ComponentProps) {
+export function renderAllComponents(type: string, componentProps: ComponentProps) {
   // Componentes Básicos
   const basicComponent = renderBasicComponents(type, componentProps)
   if (basicComponent) return basicComponent
