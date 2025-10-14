@@ -129,7 +129,7 @@ export default function EditorPage() {
   const handleUpdateComponent = useCallback((id: string, updates: any) => {
     setComponents(prev => prev.map((c) => (c.id === id ? { ...c, ...updates } : c)))
     if (selectedComponent?.id === id) {
-      setSelectedComponent(prev => prev ? { ...prev, ...updates } : null)
+      setSelectedComponent((prev: any) => prev ? { ...prev, ...updates } : null)
     }
   }, [selectedComponent])
 
