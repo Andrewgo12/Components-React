@@ -1,13 +1,24 @@
 "use client"
 
 import { useLiveEffects } from "@/hooks/use-live-effects"
-import { renderAllComponents } from "./components-ren/component-renderer"
+import { useLiveUpdates } from "@/hooks/use-live-updates"
+import { generateStyles } from "./style-engine"
+import { generateDynamicStyles, generateDynamicClasses, generateDynamicAttributes } from "@/lib/style-generator"
+import { forceApplyStyles } from "@/lib/force-styles"
+import { useEffect, useRef, useState } from "react"
+import { renderBasicComponents } from "./components-ren/basicos"
+import { renderMagicUIComponents } from "./components-ren/magic-ui"
+import { renderBackgroundComponents } from "./components-ren/fondos"
+import { renderTemplateComponents } from "./components-ren/templates"
+import { renderEffectComponents } from "./components-ren/efectos"
+import { AdvancedEditor } from "./advanced-editor"
 
 interface ComponentRendererProps {
   component: any
   isSelected: boolean
   onSelect: () => void
   onDelete: () => void
+  onUpdate?: (componentId: string, updates: any) => void
   mode: "design" | "preview"
 }
 
@@ -16,13 +27,35 @@ export function ComponentRenderer({
   isSelected,
   onSelect,
   onDelete,
+  onUpdate,
   mode,
 }: ComponentRendererProps) {
   const { type, props, effects = {} } = component
   const effectsRef = useLiveEffects(effects)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [isEditorOpen, setIsEditorOpen] = useState(false)
+  
+  // Hook para actualizaciones en vivo del inspector
+  useLiveUpdates(component)
+  
+  // Forzar aplicación de estilos cuando cambien las props
+  useEffect(() => {
+    if (containerRef.current) {
+      forceApplyStyles(containerRef.current, props)
+    }
+  }, [props])
 
+  // Generar estilos usando el motor de estilos completo + estilos dinámicos del inspector
+  const { style: generatedStyles, className: generatedClasses } = generateStyles(props)
+  const dynamicStyles = generateDynamicStyles(props)
+  const dynamicClasses = generateDynamicClasses(props)
+  const dynamicAttributes = generateDynamicAttributes(props)
+  
   const getEffectStyles = () => {
-    const styles: any = {}
+    const styles: any = { 
+      ...generatedStyles,
+      ...dynamicStyles // Aplicar estilos del inspector inmediatamente
+    }
 
     if (effects.glow?.enabled) {
       const intensity = effects.glow.intensity || 50
@@ -65,7 +98,7 @@ export function ComponentRenderer({
   }
 
   const getEffectClasses = () => {
-    const classes: string[] = []
+    const classes: string[] = [generatedClasses, dynamicClasses]
 
     if (effects.shimmer?.enabled) {
       classes.push('relative overflow-hidden')
@@ -77,7 +110,7 @@ export function ComponentRenderer({
       classes.push('relative')
     }
 
-    return classes.join(' ')
+    return classes.filter(Boolean).join(' ')
   }
 
   const renderEffectOverlays = () => {
@@ -118,35 +151,98 @@ export function ComponentRenderer({
   }
 
   const componentProps = {
-    props,
+    props: {
+      ...props,
+      ...dynamicAttributes // Aplicar atributos del inspector
+    },
     getEffectClasses,
     getEffectStyles
   }
 
-  const renderedComponent = renderAllComponents(type, componentProps)
+  const renderComponent = () => {
+    // Componentes Básicos
+    const basicComponent = renderBasicComponents(type, componentProps)
+    if (basicComponent) return basicComponent
+
+    // Magic UI Components
+    const magicComponent = renderMagicUIComponents(type, componentProps)
+    if (magicComponent) return magicComponent
+
+    // Fondos
+    const backgroundComponent = renderBackgroundComponents(type, componentProps)
+    if (backgroundComponent) return backgroundComponent
+
+    // Templates
+    const templateComponent = renderTemplateComponents(type, componentProps)
+    if (templateComponent) return templateComponent
+
+    // Efectos
+    const effectComponent = renderEffectComponents(type, componentProps)
+    if (effectComponent) return effectComponent
+
+    // Componente por defecto si no se encuentra
+    return (
+      <div className={`p-4 rounded-lg border border-dashed ${componentProps.getEffectClasses()}`} style={componentProps.getEffectStyles()}>
+        <p className="text-sm text-muted-foreground">Componente: {type}</p>
+      </div>
+    )
+  }
+
+  const renderedComponent = renderComponent()
+
+  const handleDoubleClick = (e: React.MouseEvent) => {
+    if (mode === "design") {
+      e.stopPropagation()
+      setIsEditorOpen(true)
+    }
+  }
+
+  const handleUpdateComponent = (componentId: string, updates: any) => {
+    if (onUpdate) {
+      onUpdate(componentId, updates)
+    }
+  }
 
   return (
-    <div
-      ref={effectsRef as any}
-      className={`relative ${mode === "design" ? "cursor-pointer" : ""} ${
-        isSelected ? "ring-2 ring-blue-500" : ""
-      }`}
-      onClick={mode === "design" ? onSelect : undefined}
-    >
-      {renderedComponent}
-      {renderEffectOverlays()}
-      
-      {mode === "design" && isSelected && (
-        <button
-          onClick={(e) => {
-            e.stopPropagation()
-            onDelete()
-          }}
-          className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 z-10"
-        >
-          ×
-        </button>
+    <>
+      <div
+        ref={(el) => {
+          if (effectsRef) (effectsRef as any).current = el
+          if (containerRef) containerRef.current = el
+        }}
+        data-component-id={component.id}
+        className={`relative ${mode === "design" ? "cursor-pointer" : ""} ${
+          isSelected ? "ring-2 ring-blue-500" : ""
+        }`}
+        onClick={mode === "design" ? onSelect : undefined}
+        onDoubleClick={handleDoubleClick}
+        title={mode === "design" ? "Doble clic para editar" : ""}
+      >
+        {renderedComponent}
+        {renderEffectOverlays()}
+        
+        {mode === "design" && isSelected && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              onDelete()
+            }}
+            className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 z-10"
+          >
+            ×
+          </button>
+        )}
+      </div>
+
+      {/* Editor Avanzado */}
+      {onUpdate && (
+        <AdvancedEditor
+          component={component}
+          isOpen={isEditorOpen}
+          onClose={() => setIsEditorOpen(false)}
+          onUpdate={handleUpdateComponent}
+        />
       )}
-    </div>
+    </>
   )
 }

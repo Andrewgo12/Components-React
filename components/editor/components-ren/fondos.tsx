@@ -9,22 +9,41 @@ interface ComponentProps {
 }
 
 export function renderBackgroundComponents(type: string, { props, getEffectClasses, getEffectStyles }: ComponentProps) {
+  const w = props?.width
+  const h = props?.height
   switch (type) {
     // Patrones básicos
     case "bg-dots":
       return (
-        <div
-          className={`w-64 h-48 rounded-lg relative overflow-hidden border ${getEffectClasses()}`}
-          style={{
-            ...getEffectStyles(),
-            backgroundImage: 'radial-gradient(circle, #3b82f6 1px, transparent 1px)',
-            backgroundSize: '20px 20px',
-            backgroundColor: '#f8fafc'
-          }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20" />
-          <div className="absolute bottom-2 left-2 text-xs font-medium text-gray-600 bg-white/80 px-2 py-1 rounded">
-            Dots Pattern
+        <div className={`w-96 h-64 rounded-3xl relative overflow-hidden border-2 border-blue-200 shadow-2xl ${getEffectClasses()}`} style={{
+          ...getEffectStyles(),
+          width: w ? `${w}px` : undefined,
+          height: h ? `${h}px` : undefined,
+        }}>
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: 'radial-gradient(circle, #3b82f6 2px, transparent 2px)',
+              backgroundSize: '24px 24px',
+              backgroundColor: '#f8fafc'
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/30 via-purple-500/20 to-indigo-500/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-white/50 via-transparent to-transparent" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-blue-500/20 backdrop-blur-sm rounded-3xl flex items-center justify-center mx-auto mb-4 border border-blue-300">
+                <Icons.GridIcon className="w-8 h-8 text-blue-600" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">Patrón de Puntos</h3>
+              <p className="text-gray-600 text-sm">Diseño minimalista con puntos uniformes</p>
+            </div>
+          </div>
+          <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-xl border border-blue-200 shadow-lg">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-blue-500 rounded-full" />
+              <span className="text-sm font-medium text-gray-700">Espaciado: 24px</span>
+            </div>
           </div>
         </div>
       )
@@ -37,7 +56,9 @@ export function renderBackgroundComponents(type: string, { props, getEffectClass
             ...getEffectStyles(),
             backgroundImage: 'linear-gradient(#3b82f6 1px, transparent 1px), linear-gradient(90deg, #3b82f6 1px, transparent 1px)',
             backgroundSize: '20px 20px',
-            backgroundColor: '#f8fafc'
+            backgroundColor: '#f8fafc',
+            width: w ? `${w}px` : undefined,
+            height: h ? `${h}px` : undefined,
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10" />
@@ -52,51 +73,12 @@ export function renderBackgroundComponents(type: string, { props, getEffectClass
         <div className={`w-64 h-48 rounded-lg relative overflow-hidden border ${getEffectClasses()}`} style={{
           ...getEffectStyles(),
           backgroundImage: 'repeating-linear-gradient(45deg, #e74c3c, #e74c3c 2px, transparent 2px, transparent 10px)',
-          backgroundColor: '#ecf0f1'
+          backgroundColor: '#ecf0f1',
+          width: w ? `${w}px` : undefined,
+          height: h ? `${h}px` : undefined,
         }}>
           <div className="absolute bottom-2 left-2 text-xs font-medium text-gray-800 bg-white/80 px-2 py-1 rounded">
             Lines
-          </div>
-        </div>
-      )
-
-    case "bg-chevron":
-      return (
-        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border ${getEffectClasses()}`} style={{
-          ...getEffectStyles(),
-          backgroundImage: 'repeating-linear-gradient(45deg, #f59e0b, #f59e0b 10px, #fbbf24 10px, #fbbf24 20px)',
-          backgroundColor: '#fef3c7'
-        }}>
-          <div className="absolute bottom-2 left-2 text-xs font-medium text-gray-800 bg-white/80 px-2 py-1 rounded">
-            Chevron
-          </div>
-        </div>
-      )
-
-    case "bg-zigzag":
-      return (
-        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border ${getEffectClasses()}`} style={{
-          ...getEffectStyles(),
-          backgroundImage: 'linear-gradient(135deg, #667eea 25%, transparent 25%), linear-gradient(225deg, #667eea 25%, transparent 25%), linear-gradient(45deg, #764ba2 25%, transparent 25%), linear-gradient(315deg, #764ba2 25%, transparent 25%)',
-          backgroundSize: '20px 20px',
-          backgroundColor: '#f8fafc'
-        }}>
-          <div className="absolute bottom-2 left-2 text-xs font-medium text-gray-800 bg-white/80 px-2 py-1 rounded">
-            Zigzag
-          </div>
-        </div>
-      )
-
-    case "bg-cross":
-      return (
-        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border ${getEffectClasses()}`} style={{
-          ...getEffectStyles(),
-          backgroundImage: 'radial-gradient(circle, #3b82f6 2px, transparent 2px), radial-gradient(circle, #8b5cf6 1px, transparent 1px)',
-          backgroundSize: '30px 30px, 15px 15px',
-          backgroundColor: '#f1f5f9'
-        }}>
-          <div className="absolute bottom-2 left-2 text-xs font-medium text-gray-800 bg-white/80 px-2 py-1 rounded">
-            Cross
           </div>
         </div>
       )
@@ -107,7 +89,9 @@ export function renderBackgroundComponents(type: string, { props, getEffectClass
           ...getEffectStyles(),
           backgroundImage: 'radial-gradient(circle, #ec4899 3px, transparent 3px)',
           backgroundSize: '25px 25px',
-          backgroundColor: '#fdf2f8'
+          backgroundColor: '#fdf2f8',
+          width: w ? `${w}px` : undefined,
+          height: h ? `${h}px` : undefined,
         }}>
           <div className="absolute bottom-2 left-2 text-xs font-medium text-gray-800 bg-white/80 px-2 py-1 rounded">
             Polka Dots
@@ -121,7 +105,9 @@ export function renderBackgroundComponents(type: string, { props, getEffectClass
           ...getEffectStyles(),
           backgroundImage: 'linear-gradient(45deg, #ff6b6b 25%, transparent 25%), linear-gradient(-45deg, #4ecdc4 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #45b7d1 75%), linear-gradient(-45deg, transparent 75%, #96ceb4 75%)',
           backgroundSize: '20px 20px',
-          backgroundColor: '#f8f9fa'
+          backgroundColor: '#f8f9fa',
+          width: w ? `${w}px` : undefined,
+          height: h ? `${h}px` : undefined,
         }}>
           <div className="absolute bottom-2 left-2 text-xs font-medium text-gray-800 bg-white/80 px-2 py-1 rounded">
             Mesh Pattern
@@ -132,24 +118,46 @@ export function renderBackgroundComponents(type: string, { props, getEffectClass
     // Efectos naturales
     case "bg-aurora":
       return (
-        <div
-          className={`w-64 h-48 rounded-lg relative overflow-hidden border ${getEffectClasses()}`}
-          style={{
-            ...getEffectStyles(),
-            backgroundColor: '#1e1b4b'
-          }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 opacity-70 animate-pulse" />
-          <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/10 to-transparent" />
-          <div className="absolute bottom-2 left-2 text-xs font-medium text-white bg-black/50 px-2 py-1 rounded">
-            Aurora Effect
+        <div className={`w-96 h-64 rounded-3xl relative overflow-hidden border-2 border-purple-400/30 shadow-2xl ${getEffectClasses()}`} style={{
+          ...getEffectStyles(),
+          backgroundColor: '#0f0b2f',
+          width: w ? `${w}px` : undefined,
+          height: h ? `${h}px` : undefined,
+        }}>
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-600 opacity-80" style={{
+            animation: 'aurora-wave 4s ease-in-out infinite alternate'
+          }} />
+          <div className="absolute inset-0 bg-gradient-to-br from-green-400/30 via-transparent to-purple-600/30" style={{
+            animation: 'aurora-shift 6s ease-in-out infinite alternate-reverse'
+          }} />
+          <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/10 to-transparent animate-pulse" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-purple-500/20 backdrop-blur-sm rounded-3xl flex items-center justify-center mx-auto mb-4 border border-purple-400/50" style={{
+                boxShadow: '0 0 30px rgba(168, 85, 247, 0.4)'
+              }}>
+                <Icons.SparklesIcon className="w-8 h-8 text-purple-300" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-2">Aurora Boreal</h3>
+              <p className="text-purple-200 text-sm">Luces del norte mágicas</p>
+            </div>
+          </div>
+          <div className="absolute bottom-4 left-4 bg-purple-900/80 backdrop-blur-sm px-4 py-2 rounded-xl border border-purple-400/50">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse" />
+              <span className="text-sm font-medium text-purple-200">Intensidad: Máxima</span>
+            </div>
           </div>
         </div>
       )
 
     case "bg-waves":
       return (
-        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border ${getEffectClasses()}`} style={getEffectStyles()}>
+        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border ${getEffectClasses()}`} style={{
+          ...getEffectStyles(),
+          width: w ? `${w}px` : undefined,
+          height: h ? `${h}px` : undefined,
+        }}>
           <div className="absolute inset-0 bg-gradient-to-b from-blue-400 to-blue-600">
             <div className="absolute bottom-0 w-full h-16 bg-gradient-to-t from-blue-800 to-transparent animate-pulse" />
           </div>
@@ -159,82 +167,65 @@ export function renderBackgroundComponents(type: string, { props, getEffectClass
         </div>
       )
 
-    case "bg-watercolor":
-      return (
-        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border ${getEffectClasses()}`} style={{
-          ...getEffectStyles(),
-          background: 'radial-gradient(ellipse at top left, rgba(255, 107, 107, 0.3), transparent 50%), radial-gradient(ellipse at top right, rgba(78, 205, 196, 0.3), transparent 50%), radial-gradient(ellipse at bottom, rgba(69, 183, 209, 0.3), transparent 50%)'
-        }}>
-          <div className="absolute bottom-2 left-2 text-xs font-medium text-gray-800 bg-white/80 px-2 py-1 rounded">
-            Watercolor
-          </div>
-        </div>
-      )
-
-    case "bg-marble":
-      return (
-        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border ${getEffectClasses()}`} style={{
-          ...getEffectStyles(),
-          background: 'linear-gradient(45deg, #f8f9fa 25%, transparent 25%), linear-gradient(-45deg, #e9ecef 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #dee2e6 75%), linear-gradient(-45deg, transparent 75%, #ced4da 75%)',
-          backgroundSize: '20px 20px'
-        }}>
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-100/50 to-gray-300/50" />
-          <div className="absolute bottom-2 left-2 text-xs font-medium text-gray-800 bg-white/80 px-2 py-1 rounded">
-            Marble
-          </div>
-        </div>
-      )
-
     // Efectos espaciales y cósmicos
     case "bg-stars":
       return (
-        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-gradient-to-b from-purple-900 to-black ${getEffectClasses()}`} style={getEffectStyles()}>
+        <div className={`w-96 h-64 rounded-3xl relative overflow-hidden border-2 border-indigo-400/30 bg-gradient-to-b from-indigo-900 via-purple-900 to-black shadow-2xl ${getEffectClasses()}`} style={{
+          ...getEffectStyles(),
+          width: w ? `${w}px` : undefined,
+          height: h ? `${h}px` : undefined,
+        }}>
           <div className="absolute inset-0">
-            {[...Array(25)].map((_, i) => (
-              <Icons.StarIcon
-                key={i}
-                className="absolute w-3 h-3 text-yellow-300 animate-pulse"
-                style={{
-                  left: `${Math.random() * 90}%`,
-                  top: `${Math.random() * 90}%`,
-                  animationDelay: `${Math.random() * 3}s`
-                }}
-              />
-            ))}
+            {[...Array(50)].map((_, i) => {
+              const size = Math.random() * 3 + 1
+              const brightness = Math.random() * 0.8 + 0.2
+              return (
+                <div
+                  key={i}
+                  className="absolute rounded-full animate-pulse"
+                  style={{
+                    width: `${size}px`,
+                    height: `${size}px`,
+                    left: `${Math.random() * 95}%`,
+                    top: `${Math.random() * 95}%`,
+                    backgroundColor: ['#fbbf24', '#f59e0b', '#ffffff', '#e5e7eb'][Math.floor(Math.random() * 4)],
+                    animationDelay: `${Math.random() * 4}s`,
+                    animationDuration: `${2 + Math.random() * 3}s`,
+                    opacity: brightness,
+                    boxShadow: `0 0 ${size * 2}px currentColor`
+                  }}
+                />
+              )
+            })}
+            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-blue-900/20 to-purple-900/30" />
           </div>
-          <div className="absolute bottom-2 left-2 text-xs font-medium text-white bg-black/50 px-2 py-1 rounded">
-            Stars
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-yellow-500/20 backdrop-blur-sm rounded-3xl flex items-center justify-center mx-auto mb-4 border border-yellow-400/50" style={{
+                boxShadow: '0 0 30px rgba(251, 191, 36, 0.4)'
+              }}>
+                <Icons.StarIcon className="w-8 h-8 text-yellow-300" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-2">Campo Estelar</h3>
+              <p className="text-yellow-200 text-sm">50 estrellas brillantes</p>
+            </div>
           </div>
-        </div>
-      )
-
-    case "bg-cosmic":
-      return (
-        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-gradient-to-br from-purple-900 via-blue-900 to-black ${getEffectClasses()}`} style={getEffectStyles()}>
-          <div className="absolute inset-0">
-            {[...Array(50)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute bg-white rounded-full animate-pulse"
-                style={{
-                  width: `${Math.random() * 3}px`,
-                  height: `${Math.random() * 3}px`,
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 3}s`
-                }}
-              />
-            ))}
-          </div>
-          <div className="absolute bottom-2 left-2 text-xs font-medium text-white bg-black/50 px-2 py-1 rounded">
-            Cosmic
+          <div className="absolute bottom-4 left-4 bg-indigo-900/80 backdrop-blur-sm px-4 py-2 rounded-xl border border-indigo-400/50">
+            <div className="flex items-center gap-2">
+              <Icons.StarIcon className="w-4 h-4 text-yellow-400" />
+              <span className="text-sm font-medium text-indigo-200">Constelación activa</span>
+            </div>
           </div>
         </div>
       )
 
     case "bg-nebula":
       return (
-        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-black ${getEffectClasses()}`} style={getEffectStyles()}>
+        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-black ${getEffectClasses()}`} style={{
+          ...getEffectStyles(),
+          width: w ? `${w}px` : undefined,
+          height: h ? `${h}px` : undefined,
+        }}>
           <div className="absolute inset-0">
             <div className="absolute inset-0 bg-gradient-to-br from-purple-600/40 via-pink-600/40 to-blue-600/40 animate-pulse" />
             <div className="absolute inset-0 bg-gradient-to-tl from-cyan-500/30 via-transparent to-purple-500/30" />
@@ -260,7 +251,11 @@ export function renderBackgroundComponents(type: string, { props, getEffectClass
 
     case "bg-galaxy":
       return (
-        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-gradient-to-br from-indigo-900 to-black ${getEffectClasses()}`} style={getEffectStyles()}>
+        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-gradient-to-br from-indigo-900 to-black ${getEffectClasses()}`} style={{
+          ...getEffectStyles(),
+          width: w ? `${w}px` : undefined,
+          height: h ? `${h}px` : undefined,
+        }}>
           <div className="absolute inset-0">
             {[...Array(30)].map((_, i) => (
               <div
@@ -286,27 +281,62 @@ export function renderBackgroundComponents(type: string, { props, getEffectClass
     // Efectos tecnológicos
     case "bg-matrix":
       return (
-        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-black ${getEffectClasses()}`} style={getEffectStyles()}>
-          <div className="absolute inset-0 font-mono text-green-400 text-xs overflow-hidden">
-            {[...Array(8)].map((_, col) => (
-              <div key={col} className="absolute animate-pulse" style={{ left: `${col * 12.5}%`, top: 0 }}>
-                {[...Array(15)].map((_, row) => (
-                  <div key={row} className="opacity-70" style={{ marginBottom: '2px' }}>
-                    {Math.random() > 0.5 ? '1' : '0'}
+        <div className={`w-96 h-64 rounded-3xl relative overflow-hidden border-2 border-green-500/30 bg-black shadow-2xl ${getEffectClasses()}`} style={{
+          ...getEffectStyles(),
+          boxShadow: '0 0 40px rgba(34, 197, 94, 0.3)',
+          width: w ? `${w}px` : undefined,
+          height: h ? `${h}px` : undefined,
+        }}>
+          <div className="absolute inset-0 font-mono text-green-400 text-sm overflow-hidden leading-tight">
+            {[...Array(20)].map((_, col) => (
+              <div key={col} className="absolute animate-pulse" style={{
+                left: `${col * 5}%`,
+                top: 0,
+                animationDelay: `${col * 0.1}s`,
+                animationDuration: '1.5s'
+              }}>
+                {[...Array(25)].map((_, row) => (
+                  <div key={row} className="mb-0.5" style={{
+                    color: Math.random() > 0.8 ? '#22c55e' : Math.random() > 0.6 ? '#16a34a' : '#15803d',
+                    textShadow: '0 0 5px currentColor',
+                    opacity: Math.max(0.3, 1 - (row * 0.03))
+                  }}>
+                    {String.fromCharCode(0x30A0 + Math.floor(Math.random() * 96))}
                   </div>
                 ))}
               </div>
             ))}
           </div>
-          <div className="absolute bottom-2 left-2 text-xs font-medium text-green-400 bg-black/80 px-2 py-1 rounded">
-            Matrix
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/70" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-green-500/20 backdrop-blur-sm rounded-3xl flex items-center justify-center mx-auto mb-4 border border-green-500/50" style={{
+                boxShadow: '0 0 30px rgba(34, 197, 94, 0.4)'
+              }}>
+                <Icons.CodeIcon className="w-8 h-8 text-green-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-green-400 mb-2" style={{
+                textShadow: '0 0 15px #22c55e'
+              }}>Matrix Digital</h3>
+              <p className="text-green-300 text-sm">Código en cascada infinita</p>
+            </div>
+          </div>
+          <div className="absolute bottom-4 left-4 bg-green-900/80 backdrop-blur-sm px-4 py-2 rounded-xl border border-green-500/50">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+              <span className="text-sm font-medium text-green-200">Flujo: 1.21 GB/s</span>
+            </div>
           </div>
         </div>
       )
 
     case "bg-circuit":
       return (
-        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-gray-900 ${getEffectClasses()}`} style={getEffectStyles()}>
+        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-gray-900 ${getEffectClasses()}`} style={{
+          ...getEffectStyles(),
+          width: w ? `${w}px` : undefined,
+          height: h ? `${h}px` : undefined,
+        }}>
           <div className="absolute inset-0">
             {[...Array(20)].map((_, i) => (
               <div key={i}>
@@ -340,29 +370,13 @@ export function renderBackgroundComponents(type: string, { props, getEffectClass
         </div>
       )
 
-    case "bg-binary":
-      return (
-        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-black ${getEffectClasses()}`} style={getEffectStyles()}>
-          <div className="absolute inset-0 font-mono text-green-400 text-xs overflow-hidden">
-            {[...Array(12)].map((_, row) => (
-              <div key={row} className="flex" style={{ marginBottom: '4px' }}>
-                {[...Array(32)].map((_, col) => (
-                  <span key={col} className="opacity-70">
-                    {Math.random() > 0.5 ? '1' : '0'}
-                  </span>
-                ))}
-              </div>
-            ))}
-          </div>
-          <div className="absolute bottom-2 left-2 text-xs font-medium text-green-400 bg-black/80 px-2 py-1 rounded">
-            Binary
-          </div>
-        </div>
-      )
-
     case "bg-glitch":
       return (
-        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-black ${getEffectClasses()}`} style={getEffectStyles()}>
+        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-black ${getEffectClasses()}`} style={{
+          ...getEffectStyles(),
+          width: w ? `${w}px` : undefined,
+          height: h ? `${h}px` : undefined,
+        }}>
           <div className="absolute inset-0">
             {[...Array(15)].map((_, i) => (
               <div
@@ -400,7 +414,11 @@ export function renderBackgroundComponents(type: string, { props, getEffectClass
     // Efectos de partículas
     case "bg-particles":
       return (
-        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-black ${getEffectClasses()}`} style={getEffectStyles()}>
+        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-black ${getEffectClasses()}`} style={{
+          ...getEffectStyles(),
+          width: w ? `${w}px` : undefined,
+          height: h ? `${h}px` : undefined,
+        }}>
           <div className="absolute inset-0">
             {[...Array(20)].map((_, i) => (
               <div
@@ -420,34 +438,13 @@ export function renderBackgroundComponents(type: string, { props, getEffectClass
         </div>
       )
 
-    case "bg-snow":
-      return (
-        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-gradient-to-b from-gray-200 to-white ${getEffectClasses()}`} style={getEffectStyles()}>
-          <div className="absolute inset-0">
-            {[...Array(30)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute bg-white rounded-full animate-pulse"
-                style={{
-                  width: `${2 + Math.random() * 4}px`,
-                  height: `${2 + Math.random() * 4}px`,
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 3}s`,
-                  opacity: 0.7 + Math.random() * 0.3
-                }}
-              />
-            ))}
-          </div>
-          <div className="absolute bottom-2 left-2 text-xs font-medium text-gray-600 bg-white/80 px-2 py-1 rounded">
-            Snow
-          </div>
-        </div>
-      )
-
     case "bg-rain":
       return (
-        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-gradient-to-b from-gray-600 to-gray-800 ${getEffectClasses()}`} style={getEffectStyles()}>
+        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-gradient-to-b from-gray-600 to-gray-800 ${getEffectClasses()}`} style={{
+          ...getEffectStyles(),
+          width: w ? `${w}px` : undefined,
+          height: h ? `${h}px` : undefined,
+        }}>
           <div className="absolute inset-0">
             {[...Array(25)].map((_, i) => (
               <div
@@ -472,7 +469,11 @@ export function renderBackgroundComponents(type: string, { props, getEffectClass
     // Efectos geométricos
     case "bg-hexagon":
       return (
-        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-yellow-400 ${getEffectClasses()}`} style={getEffectStyles()}>
+        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-yellow-400 ${getEffectClasses()}`} style={{
+          ...getEffectStyles(),
+          width: w ? `${w}px` : undefined,
+          height: h ? `${h}px` : undefined,
+        }}>
           <div className="absolute inset-0">
             {[...Array(12)].map((_, i) => (
               <div
@@ -492,31 +493,13 @@ export function renderBackgroundComponents(type: string, { props, getEffectClass
         </div>
       )
 
-    case "bg-triangles":
-      return (
-        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-teal-500 ${getEffectClasses()}`} style={getEffectStyles()}>
-          <div className="absolute inset-0">
-            {[...Array(20)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-0 h-0 border-l-4 border-r-4 border-b-8 border-transparent border-b-cyan-300/60"
-                style={{
-                  left: `${Math.random() * 90}%`,
-                  top: `${Math.random() * 90}%`,
-                  transform: `rotate(${Math.random() * 360}deg)`
-                }}
-              />
-            ))}
-          </div>
-          <div className="absolute bottom-2 left-2 text-xs font-medium text-white bg-black/50 px-2 py-1 rounded">
-            Triangles
-          </div>
-        </div>
-      )
-
     case "bg-circles":
       return (
-        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-indigo-900 ${getEffectClasses()}`} style={getEffectStyles()}>
+        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-indigo-900 ${getEffectClasses()}`} style={{
+          ...getEffectStyles(),
+          width: w ? `${w}px` : undefined,
+          height: h ? `${h}px` : undefined,
+        }}>
           <div className="absolute inset-0">
             {[...Array(15)].map((_, i) => (
               <div
@@ -538,31 +521,14 @@ export function renderBackgroundComponents(type: string, { props, getEffectClass
         </div>
       )
 
-    case "bg-diamond":
-      return (
-        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-rose-500 ${getEffectClasses()}`} style={getEffectStyles()}>
-          <div className="absolute inset-0">
-            {[...Array(20)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-4 h-4 bg-pink-300/60 transform rotate-45"
-                style={{
-                  left: `${(i % 5) * 20 + 10}%`,
-                  top: `${Math.floor(i / 5) * 25 + 10}%`
-                }}
-              />
-            ))}
-          </div>
-          <div className="absolute bottom-2 left-2 text-xs font-medium text-white bg-black/50 px-2 py-1 rounded">
-            Diamond
-          </div>
-        </div>
-      )
-
     // Efectos de gradientes y colores
     case "bg-gradient":
       return (
-        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500 ${getEffectClasses()}`} style={getEffectStyles()}>
+        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500 ${getEffectClasses()}`} style={{
+          ...getEffectStyles(),
+          width: w ? `${w}px` : undefined,
+          height: h ? `${h}px` : undefined,
+        }}>
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
           <div className="absolute bottom-2 left-2 text-xs font-medium text-white bg-black/50 px-2 py-1 rounded">
             Gradient
@@ -575,7 +541,9 @@ export function renderBackgroundComponents(type: string, { props, getEffectClass
         <div className={`w-64 h-48 rounded-lg relative overflow-hidden border ${getEffectClasses()}`} style={{
           ...getEffectStyles(),
           background: 'radial-gradient(circle at 20% 50%, #ff006e 0%, transparent 50%), radial-gradient(circle at 80% 20%, #8338ec 0%, transparent 50%), radial-gradient(circle at 40% 80%, #3a86ff 0%, transparent 50%)',
-          backgroundColor: '#000'
+          backgroundColor: '#000',
+          width: w ? `${w}px` : undefined,
+          height: h ? `${h}px` : undefined,
         }}>
           <div className="absolute inset-0 bg-gradient-to-br from-transparent via-pink-500/20 to-transparent animate-pulse" />
           <div className="absolute bottom-2 left-2 text-xs font-medium text-white bg-black/50 px-2 py-1 rounded">
@@ -590,7 +558,9 @@ export function renderBackgroundComponents(type: string, { props, getEffectClass
           ...getEffectStyles(),
           background: 'linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3)',
           backgroundSize: '400% 400%',
-          animation: 'rainbow 3s ease-in-out infinite'
+          animation: 'rainbow 3s ease-in-out infinite',
+          width: w ? `${w}px` : undefined,
+          height: h ? `${h}px` : undefined,
         }}>
           <div className="absolute bottom-2 left-2 text-xs font-medium text-white bg-black/50 px-2 py-1 rounded">
             Rainbow
@@ -598,69 +568,133 @@ export function renderBackgroundComponents(type: string, { props, getEffectClass
         </div>
       )
 
-    // Efectos animados
+    // 25 fondos total
     case "bg-ripple":
       return (
-        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-cyan-500 ${getEffectClasses()}`} style={getEffectStyles()}>
-          <div className="absolute inset-0">
-            {[...Array(5)].map((_, i) => (
+        <div className={`w-80 h-56 rounded-xl relative overflow-hidden border-2 border-cyan-200 ${getEffectClasses()}`} style={{
+          ...getEffectStyles(),
+          width: w ? `${w}px` : undefined,
+          height: h ? `${h}px` : undefined,
+        }}>
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 to-blue-600">
+            {[...Array(4)].map((_, i) => (
               <div
                 key={i}
-                className="absolute border-2 border-white/30 rounded-full animate-ping"
+                className="absolute border-3 border-white/40 rounded-full animate-ping"
                 style={{
-                  width: `${(i + 1) * 40}px`,
-                  height: `${(i + 1) * 40}px`,
+                  width: `${(i + 1) * 60}px`,
+                  height: `${(i + 1) * 60}px`,
                   left: '50%',
                   top: '50%',
                   transform: 'translate(-50%, -50%)',
-                  animationDelay: `${i * 0.5}s`
+                  animationDelay: `${i * 0.6}s`,
+                  animationDuration: '2s'
                 }}
               />
             ))}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
           </div>
-          <div className="absolute bottom-2 left-2 text-xs font-medium text-white bg-black/50 px-2 py-1 rounded">
-            Ripple
-          </div>
-        </div>
-      )
-
-    case "bg-spiral":
-      return (
-        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-gradient-to-br from-violet-600 to-purple-800 ${getEffectClasses()}`} style={getEffectStyles()}>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-32 h-32 border-4 border-pink-400/50 rounded-full animate-spin" style={{ borderTopColor: '#ec4899' }} />
-            <div className="absolute w-24 h-24 border-4 border-purple-400/50 rounded-full animate-spin" style={{ borderTopColor: '#a855f7', animationDirection: 'reverse' }} />
-            <div className="absolute w-16 h-16 border-4 border-indigo-400/50 rounded-full animate-spin" style={{ borderTopColor: '#6366f1' }} />
-          </div>
-          <div className="absolute bottom-2 left-2 text-xs font-medium text-white bg-black/50 px-2 py-1 rounded">
-            Spiral
+          <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-lg">
+            <div className="font-bold text-cyan-800">Efecto Ripple</div>
+            <div className="text-xs text-cyan-600">Ondas expansivas</div>
           </div>
         </div>
       )
 
-    case "bg-noise":
+    case "bg-matrix-rain":
       return (
-        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border bg-gray-800 ${getEffectClasses()}`} style={getEffectStyles()}>
-          <div className="absolute inset-0 opacity-30">
+        <div className={`w-80 h-56 rounded-xl relative overflow-hidden bg-black border-2 border-green-500 ${getEffectClasses()}`} style={{
+          ...getEffectStyles(),
+          width: w ? `${w}px` : undefined,
+          height: h ? `${h}px` : undefined,
+        }}>
+          <div className="absolute inset-0">
+            {[...Array(12)].map((_, col) => (
+              <div key={col} className="absolute font-mono text-green-400 text-sm animate-pulse" style={{
+                left: `${col * 8}%`,
+                top: 0,
+                animationDelay: `${col * 0.2}s`
+              }}>
+                {[...Array(20)].map((_, row) => (
+                  <div key={row} className="opacity-70" style={{
+                    marginBottom: '2px',
+                    opacity: Math.max(0.1, 1 - (row * 0.05))
+                  }}>
+                    {Math.random() > 0.5 ? '1' : '0'}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+          <div className="absolute bottom-4 left-4 bg-green-900/80 backdrop-blur-sm px-3 py-2 rounded-lg border border-green-500">
+            <div className="font-bold text-green-400">Matrix Rain</div>
+            <div className="text-xs text-green-300">Código digital</div>
+          </div>
+        </div>
+      )
+
+    case "bg-cosmic-dust":
+      return (
+        <div className={`w-80 h-56 rounded-xl relative overflow-hidden bg-gradient-to-br from-purple-900 via-blue-900 to-black border-2 border-purple-400 ${getEffectClasses()}`} style={{
+          ...getEffectStyles(),
+          width: w ? `${w}px` : undefined,
+          height: h ? `${h}px` : undefined,
+        }}>
+          <div className="absolute inset-0">
             {[...Array(100)].map((_, i) => (
               <div
                 key={i}
-                className="absolute w-px h-px bg-white"
+                className="absolute bg-white rounded-full animate-pulse"
                 style={{
+                  width: `${Math.random() * 3 + 1}px`,
+                  height: `${Math.random() * 3 + 1}px`,
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
-                  opacity: Math.random()
+                  animationDelay: `${Math.random() * 3}s`,
+                  opacity: Math.random() * 0.8 + 0.2
                 }}
               />
             ))}
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-transparent to-blue-500/20 animate-pulse" />
           </div>
-          <div className="absolute bottom-2 left-2 text-xs font-medium text-white bg-black/50 px-2 py-1 rounded">
-            Noise
+          <div className="absolute bottom-4 left-4 bg-purple-900/80 backdrop-blur-sm px-3 py-2 rounded-lg border border-purple-400">
+            <div className="font-bold text-purple-200">Polvo Cósmico</div>
+            <div className="text-xs text-purple-300">Galaxia infinita</div>
           </div>
         </div>
       )
 
-    // Más fondos hasta llegar a 100...
+    case "bg-chevron":
+      return (
+        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border ${getEffectClasses()}`} style={{
+          ...getEffectStyles(),
+          backgroundImage: 'repeating-linear-gradient(45deg, #8b5cf6, #8b5cf6 10px, #a855f7 10px, #a855f7 20px)',
+          backgroundColor: '#f3e8ff',
+          width: w ? `${w}px` : undefined,
+          height: h ? `${h}px` : undefined,
+        }}>
+          <div className="absolute bottom-2 left-2 text-xs font-medium text-white bg-purple-600/80 px-2 py-1 rounded">
+            Chevron
+          </div>
+        </div>
+      )
+
+    case "bg-zigzag":
+      return (
+        <div className={`w-64 h-48 rounded-lg relative overflow-hidden border ${getEffectClasses()}`} style={{
+          ...getEffectStyles(),
+          backgroundImage: 'linear-gradient(135deg, #84cc16 25%, transparent 25%), linear-gradient(225deg, #84cc16 25%, transparent 25%), linear-gradient(45deg, #84cc16 25%, transparent 25%), linear-gradient(315deg, #84cc16 25%, #a3e635 25%)',
+          backgroundSize: '20px 20px',
+          backgroundColor: '#ecfccb',
+          width: w ? `${w}px` : undefined,
+          height: h ? `${h}px` : undefined,
+        }}>
+          <div className="absolute bottom-2 left-2 text-xs font-medium text-gray-800 bg-white/80 px-2 py-1 rounded">
+            Zigzag
+          </div>
+        </div>
+      )
+
     default:
       return null
   }

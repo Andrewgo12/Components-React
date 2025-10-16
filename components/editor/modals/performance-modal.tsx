@@ -20,17 +20,17 @@ export function PerformanceModal({ open, onOpenChange }: PerformanceModalProps) 
   const [chartData, setChartData] = useState<number[]>([])
 
   useEffect(() => {
-    if (open) {
-      // Simular datos de performance en tiempo real
-      const interval = setInterval(() => {
-        setRenderTime(Math.floor(Math.random() * 20) + 8)
-        setMemory(Math.floor(Math.random() * 30) + 40)
-        setFps(Math.floor(Math.random() * 10) + 55)
-        setChartData((prev) => [...prev.slice(-29), Math.floor(Math.random() * 60) + 30])
-      }, 1000)
+    if (!open) return
 
-      return () => clearInterval(interval)
-    }
+    // Simular datos de performance en tiempo real
+    const interval = setInterval(() => {
+      setRenderTime(Math.floor(Math.random() * 20) + 8)
+      setMemory(Math.floor(Math.random() * 30) + 40)
+      setFps(Math.floor(Math.random() * 10) + 55)
+      setChartData((prev) => [...prev.slice(-29), Math.floor(Math.random() * 60) + 30])
+    }, 1000)
+
+    return () => clearInterval(interval)
   }, [open])
 
   const getScoreColor = (score: number): string => {
@@ -39,7 +39,7 @@ export function PerformanceModal({ open, onOpenChange }: PerformanceModalProps) 
     return "text-destructive"
   }
 
-  const getScoreLabel = (score: number) => {
+  const getScoreLabel = (score: number): string => {
     if (score >= 90) return "Excelente"
     if (score >= 70) return "Bueno"
     if (score >= 50) return "Normal"

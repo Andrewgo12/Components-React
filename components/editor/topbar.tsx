@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import * as Icons from "@/components/icons"
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect } from "react"
 import { CodeModal } from "./modals/code-modal"
 import { ProjectModal } from "./modals/project-modal"
 import { ShortcutsModal } from "./modals/shortcuts-modal"
@@ -69,6 +69,24 @@ export function Topbar({
   const [lastSaved, setLastSaved] = useState<Date | null>(null)
   const [isSaving, setIsSaving] = useState(false)
   const { toast } = useToast()
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    if (typeof window === 'undefined') return 'light'
+    const saved = localStorage.getItem('componentsr-theme') as 'light' | 'dark' | null
+    if (saved) return saved
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    return prefersDark ? 'dark' : 'light'
+  })
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return
+    const root = document.documentElement
+    if (theme === 'dark') {
+      root.classList.add('dark')
+    } else {
+      root.classList.remove('dark')
+    }
+    localStorage.setItem('componentsr-theme', theme)
+  }, [theme])
 
   useEffect(() => {
     if (!autoSaveEnabled || components.length === 0) return
@@ -121,9 +139,8 @@ export function Topbar({
       })
     } catch (error) {
       toast({
-        title: "Error",
+        title: "⚠️ Error",
         description: "No se pudo guardar el proyecto",
-        variant: "destructive"
       })
     } finally {
       setIsSaving(false)
@@ -460,6 +477,26 @@ export function Topbar({
 
         {/* Acciones principales - más compactas */}
         <div className="flex items-center gap-1.5">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setTheme(prev => prev === 'dark' ? 'light' : 'dark')}
+                className="gap-1.5 h-7 text-xs px-2"
+                title="Cambiar tema"
+              >
+                {theme === 'dark' ? (
+                  <>Claro</>
+                ) : (
+                  <>Oscuro</>
+                )}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="text-xs">Alternar claro/oscuro</p>
+            </TooltipContent>
+          </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button

@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-
+@import './effects.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -122,6 +122,31 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Performance rules for editor mode */
+.editor-mode {
+  /* Prefer reduced motion globally while editing */
+  --editor-transition-duration: 120ms;
+}
+
+.editor-mode * {
+  transition-duration: var(--editor-transition-duration) !important;
+  animation-duration: calc(var(--editor-transition-duration) * 2) !important;
+  animation-iteration-count: 1 !important;
+}
+
+.editor-mode .glass-effect,
+.editor-mode .glass-effect-dark {
+  /* Lighter blur to reduce paint cost during edit */
+  backdrop-filter: blur(4px) !important;
+}
+
+.editor-mode .shadow-premium,
+.editor-mode .shadow-premium-lg,
+.editor-mode .shadow-premium-xl {
+  /* Reduce expensive shadows */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08) !important;
 }
 
 /* Custom animations for new effects */

@@ -3,8 +3,9 @@
 import type React from "react"
 
 import { ComponentRenderer } from "./components-ren/component-renderer"
+import { ResizableWrapper } from "./resizable-wrapper"
 import * as Icons from "@/components/icons"
-import { useState, useEffect } from "react"
+import { useState, useCallback } from "react"
 
 interface CanvasProps {
   components: any[]
@@ -27,25 +28,19 @@ export function Canvas({
   showGrid,
   mode,
 }: CanvasProps) {
-  const [isLoading, setIsLoading] = useState(true)
   const [draggedComponent, setDraggedComponent] = useState<any>(null)
 
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 500)
-    return () => clearTimeout(timer)
-  }, [])
-
-  const handleDragStart = (e: React.DragEvent, component: any) => {
+  const handleDragStart = useCallback((e: React.DragEvent, component: any) => {
     setDraggedComponent(component)
     e.dataTransfer.effectAllowed = 'move'
-  }
+  }, [])
 
-  const handleDragOver = (e: React.DragEvent) => {
+  const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault()
     e.dataTransfer.dropEffect = 'move'
-  }
+  }, [])
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault()
     if (!draggedComponent) return
 
@@ -58,13 +53,22 @@ export function Canvas({
     })
 
     setDraggedComponent(null)
-  }
+  }, [draggedComponent, onUpdateComponent, zoom])
 
-  const handleCanvasClick = (e: React.MouseEvent) => {
+  const handleCanvasClick = useCallback((e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
       onSelectComponent(null)
     }
-  }
+  }, [onSelectComponent])
+
+  const handleResize = useCallback((id: string, width: number, height: number) => {
+    onUpdateComponent(id, {
+      props: {
+        width,
+        height
+      }
+    })
+  }, [onUpdateComponent])
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
@@ -101,14 +105,7 @@ export function Canvas({
           />
         )}
 
-        {isLoading ? (
-          <div className="relative h-full bg-white dark:bg-card rounded-lg shadow-premium-lg p-6 flex items-center justify-center animate-in fade-in duration-300">
-            <div className="text-center">
-              <Icons.LoaderIcon className="w-6 h-6 animate-spin text-primary mx-auto mb-3" />
-              <p className="text-[10px] text-muted-foreground">Cargando canvas...</p>
-            </div>
-          </div>
-        ) : (
+        {
           <div
             className="relative h-full bg-white dark:bg-card rounded-lg shadow-premium-lg p-4 animate-in fade-in zoom-in-95 duration-300 transition-transform"
             style={{ 
@@ -152,13 +149,22 @@ export function Canvas({
                     draggable={!component.locked && mode === 'design'}
                     onDragStart={(e) => !component.locked && handleDragStart(e, component)}
                   >
-                    <ComponentRenderer
-                      component={component}
-                      isSelected={selectedComponent?.id === component.id}
-                      onSelect={() => !component.locked && onSelectComponent(component)}
-                      onDelete={() => onDeleteComponent(component.id)}
-                      mode={mode}
-                    />
+                    <ResizableWrapper
+                      componentId={component.id}
+                      width={component.props?.width}
+                      height={component.props?.height}
+                      onResize={handleResize}
+                      isSelected={selectedComponent?.id === component.id && !component.locked && mode === 'design'}
+                    >
+                      <ComponentRenderer
+                        component={component}
+                        isSelected={selectedComponent?.id === component.id}
+                        onSelect={() => !component.locked && onSelectComponent(component)}
+                        onDelete={() => onDeleteComponent(component.id)}
+                        onUpdate={onUpdateComponent}
+                        mode={mode}
+                      />
+                    </ResizableWrapper>
                     {component.locked && mode === 'design' && (
                       <div className="absolute -top-2 -right-2 w-5 h-5 bg-yellow-500 text-white rounded-full flex items-center justify-center text-xs">
                         <Icons.LockIcon className="w-3 h-3" />
@@ -169,7 +175,7 @@ export function Canvas({
               )}
             </div>
           </div>
-        )}
+        }
       </div>
     </div>
   )
