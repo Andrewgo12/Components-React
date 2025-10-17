@@ -129,32 +129,38 @@ const templateComponents = [
 ]
 
 const effectsComponents = [
-  // 25 componentes de efectos exactos del archivo efectos.tsx
+  // Efectos básicos
   { id: "effect-glow", name: "Glow", icon: Icons.SparklesIcon, color: "from-yellow-400 to-orange-400" },
   { id: "effect-shimmer", name: "Shimmer", icon: Icons.ZapIcon, color: "from-blue-400 to-cyan-400" },
   { id: "effect-neon", name: "Neon", icon: Icons.ZapIcon, color: "from-pink-400 to-purple-400" },
   { id: "effect-ripple", name: "Ripple", icon: Icons.WavesIcon, color: "from-blue-400 to-indigo-400" },
   { id: "effect-glass", name: "Glass", icon: Icons.SquareIcon, color: "from-teal-400 to-cyan-400" },
-  { id: "effect-crystal", name: "Crystal", icon: Icons.SparklesIcon, color: "from-cyan-300 to-blue-300" },
-  { id: "effect-particle", name: "Particle", icon: Icons.SparklesIcon, color: "from-yellow-400 to-amber-400" },
-  { id: "effect-stardust", name: "Stardust", icon: Icons.SparklesIcon, color: "from-yellow-200 to-amber-200" },
-  { id: "effect-matrix", name: "Matrix", icon: Icons.GridIcon, color: "from-green-400 to-teal-400" },
-  { id: "effect-glitch", name: "Glitch", icon: Icons.ZapIcon, color: "from-red-400 to-pink-400" },
-  { id: "effect-lightning", name: "Lightning", icon: Icons.ZapIcon, color: "from-yellow-400 to-purple-400" },
-  { id: "effect-3d", name: "3D Effect", icon: Icons.SquareIcon, color: "from-purple-600 to-pink-600" },
-  { id: "effect-morph", name: "Morph", icon: Icons.SparklesIcon, color: "from-teal-400 to-green-400" },
-  { id: "effect-wave", name: "Wave", icon: Icons.WavesIcon, color: "from-cyan-400 to-teal-400" },
-  { id: "effect-distortion", name: "Distorsión", icon: Icons.WavesIcon, color: "from-pink-500 to-violet-500" },
-  { id: "effect-fire", name: "Fire", icon: Icons.ZapIcon, color: "from-red-600 to-orange-500" },
-  { id: "effect-magnetic", name: "Magnetic", icon: Icons.MagnetIcon, color: "from-purple-600 to-indigo-600" },
-  { id: "effect-lightning-storm", name: "Lightning Storm", icon: Icons.ZapIcon, color: "from-yellow-500 to-purple-500" },
-  { id: "effect-plasma-orb", name: "Plasma Orb", icon: Icons.SparklesIcon, color: "from-pink-500 to-purple-500" },
   { id: "effect-pulse", name: "Pulse", icon: Icons.CircleIcon, color: "from-red-400 to-pink-400" },
   { id: "effect-bounce", name: "Bounce", icon: Icons.MousePointerIcon, color: "from-green-400 to-emerald-400" },
   { id: "effect-rotate", name: "Rotate", icon: Icons.LoaderIcon, color: "from-purple-400 to-violet-400" },
   { id: "effect-scale", name: "Scale", icon: Icons.MousePointerIcon, color: "from-orange-400 to-red-400" },
   { id: "effect-slide", name: "Slide", icon: Icons.MoveIcon, color: "from-indigo-400 to-blue-400" },
-  { id: "effect-fade", name: "Fade", icon: Icons.CircleIcon, color: "from-gray-400 to-zinc-400" }
+  { id: "effect-fade", name: "Fade", icon: Icons.CircleIcon, color: "from-gray-400 to-zinc-400" },
+  { id: "effect-wave", name: "Wave", icon: Icons.WavesIcon, color: "from-cyan-400 to-teal-400" }
+]
+
+const animationComponents = [
+  // Animaciones con Framer Motion y React Spring
+  { id: "anim-fadein", name: "Fade In", icon: Icons.SparklesIcon, color: "from-blue-500 to-purple-500" },
+  { id: "anim-scalehover", name: "Scale Hover", icon: Icons.MousePointerIcon, color: "from-green-500 to-teal-500" },
+  { id: "anim-counter", name: "Counter", icon: Icons.ChartIcon, color: "from-orange-500 to-red-500" },
+  { id: "anim-spring", name: "Spring Card", icon: Icons.SquareIcon, color: "from-purple-500 to-pink-500" },
+  { id: "anim-marquee", name: "Marquee", icon: Icons.MoveIcon, color: "from-cyan-500 to-blue-500" },
+  { id: "anim-typewriter", name: "Typewriter", icon: Icons.TypeIcon, color: "from-yellow-500 to-orange-500" },
+  { id: "anim-floating", name: "Floating", icon: Icons.CircleIcon, color: "from-indigo-500 to-purple-500" },
+  { id: "anim-stagger", name: "Staggered", icon: Icons.LayersIcon, color: "from-pink-500 to-rose-500" },
+  { id: "anim-tilt", name: "3D Tilt", icon: Icons.ExpandIcon, color: "from-emerald-500 to-green-500" },
+  { id: "anim-morph", name: "Morph", icon: Icons.ShuffleIcon, color: "from-violet-500 to-purple-500" },
+  { id: "anim-drag", name: "Draggable", icon: Icons.MoveIcon, color: "from-amber-500 to-yellow-500" },
+  { id: "anim-wavetext", name: "Wave Text", icon: Icons.WavesIcon, color: "from-teal-500 to-cyan-500" },
+  { id: "anim-magnetic", name: "Magnetic", icon: Icons.MagnetIcon, color: "from-red-500 to-pink-500" },
+  { id: "anim-glitch", name: "Glitch", icon: Icons.ZapIcon, color: "from-gray-500 to-slate-500" },
+  { id: "anim-scrollreveal", name: "Scroll Reveal", icon: Icons.ArrowUpIcon, color: "from-blue-600 to-indigo-600" }
 ]
 
 interface FolderItem {
@@ -180,7 +186,8 @@ export function Sidebar({ onAddComponent }: SidebarProps) {
     { id: "magic", label: "Magic UI", components: magicUIComponents },
     { id: "backgrounds", label: "Fondos", components: backgroundComponents },
     { id: "templates", label: "Templates", components: templateComponents },
-    { id: "effects", label: "Efectos", components: effectsComponents }
+    { id: "effects", label: "Efectos", components: effectsComponents },
+    { id: "animations", label: "Animaciones", components: animationComponents }
   ]
 
   const currentCategory = categories.find(cat => cat.id === activeCategory)
