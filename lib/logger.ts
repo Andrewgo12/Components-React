@@ -32,15 +32,19 @@ class Logger {
     
     switch (level) {
       case 'error':
+        // eslint-disable-next-line no-console
         console.error(logMessage, entry.data)
         break
       case 'warn':
+        // eslint-disable-next-line no-console
         console.warn(logMessage, entry.data)
         break
       case 'info':
+        // eslint-disable-next-line no-console
         console.info(logMessage, entry.data)
         break
       case 'debug':
+        // eslint-disable-next-line no-console
         console.debug(logMessage, entry.data)
         break
     }
