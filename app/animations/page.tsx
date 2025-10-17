@@ -20,7 +20,20 @@ import {
   MagneticButton,
   GlitchText,
   ScrollRevealDirection,
-  TextRevealScroll
+  TextRevealScroll,
+  FramerFadeIn,
+  FramerStagger,
+  SpringTrail,
+  GSAPTimeline,
+  AnimeSVGDraw,
+  TypedJSText,
+  AOSAnimation,
+  AwesomeRevealFade,
+  ConfettiEffect,
+  ParallaxTiltCard,
+  AnimatedCountUp,
+  FlipMoveList,
+  TickerAnimation
 } from "@/components/animations"
 
 export default function AnimationsPage() {

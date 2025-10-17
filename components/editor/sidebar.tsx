@@ -145,22 +145,67 @@ const effectsComponents = [
 ]
 
 const animationComponents = [
-  // Animaciones con Framer Motion y React Spring
+  // Framer Motion
   { id: "anim-fadein", name: "Fade In", icon: Icons.SparklesIcon, color: "from-blue-500 to-purple-500" },
   { id: "anim-scalehover", name: "Scale Hover", icon: Icons.MousePointerIcon, color: "from-green-500 to-teal-500" },
-  { id: "anim-counter", name: "Counter", icon: Icons.ChartIcon, color: "from-orange-500 to-red-500" },
-  { id: "anim-spring", name: "Spring Card", icon: Icons.SquareIcon, color: "from-purple-500 to-pink-500" },
-  { id: "anim-marquee", name: "Marquee", icon: Icons.MoveIcon, color: "from-cyan-500 to-blue-500" },
-  { id: "anim-typewriter", name: "Typewriter", icon: Icons.TypeIcon, color: "from-yellow-500 to-orange-500" },
-  { id: "anim-floating", name: "Floating", icon: Icons.CircleIcon, color: "from-indigo-500 to-purple-500" },
   { id: "anim-stagger", name: "Staggered", icon: Icons.LayersIcon, color: "from-pink-500 to-rose-500" },
-  { id: "anim-tilt", name: "3D Tilt", icon: Icons.ExpandIcon, color: "from-emerald-500 to-green-500" },
-  { id: "anim-morph", name: "Morph", icon: Icons.ShuffleIcon, color: "from-violet-500 to-purple-500" },
   { id: "anim-drag", name: "Draggable", icon: Icons.MoveIcon, color: "from-amber-500 to-yellow-500" },
-  { id: "anim-wavetext", name: "Wave Text", icon: Icons.WavesIcon, color: "from-teal-500 to-cyan-500" },
+  { id: "anim-morph", name: "Morph", icon: Icons.ShuffleIcon, color: "from-violet-500 to-purple-500" },
+  { id: "anim-scrollreveal", name: "Scroll Reveal", icon: Icons.ArrowUpIcon, color: "from-blue-600 to-indigo-600" },
+  { id: "anim-parallax", name: "Parallax", icon: Icons.LayersIcon, color: "from-purple-600 to-blue-600" },
+  { id: "anim-gesture", name: "Gestures", icon: Icons.MousePointerIcon, color: "from-orange-600 to-red-600" },
+  
+  // React Spring
+  { id: "anim-spring", name: "Spring Card", icon: Icons.SquareIcon, color: "from-purple-500 to-pink-500" },
+  { id: "anim-tilt", name: "3D Tilt", icon: Icons.ExpandIcon, color: "from-emerald-500 to-green-500" },
+  { id: "anim-trail", name: "Trail", icon: Icons.WavesIcon, color: "from-cyan-500 to-blue-500" },
+  { id: "anim-carousel", name: "Carousel", icon: Icons.ArrowDownIcon, color: "from-indigo-500 to-purple-500" },
+  
+  // GSAP
+  { id: "anim-gsap-timeline", name: "Timeline", icon: Icons.ClockIcon, color: "from-green-600 to-emerald-600" },
+  { id: "anim-gsap-morph", name: "SVG Morph", icon: Icons.SparklesIcon, color: "from-pink-600 to-rose-600" },
+  { id: "anim-gsap-scroll", name: "ScrollTrigger", icon: Icons.ArrowUpIcon, color: "from-blue-700 to-indigo-700" },
+  { id: "anim-gsap-path", name: "Motion Path", icon: Icons.WavesIcon, color: "from-teal-600 to-cyan-600" },
+  
+  // Anime.js
+  { id: "anim-anime-svg", name: "SVG Draw", icon: Icons.PencilIcon, color: "from-yellow-600 to-orange-600" },
+  { id: "anim-anime-morph", name: "Shape Morph", icon: Icons.ShuffleIcon, color: "from-red-600 to-pink-600" },
+  { id: "anim-anime-stagger", name: "Anime Stagger", icon: Icons.GridIcon, color: "from-purple-700 to-violet-700" },
+  
+  // Texto y Contadores
+  { id: "anim-counter", name: "Counter", icon: Icons.ChartIcon, color: "from-orange-500 to-red-500" },
+  { id: "anim-typewriter", name: "Typewriter", icon: Icons.TypeIcon, color: "from-yellow-500 to-orange-500" },
+  { id: "anim-typedjs", name: "Typed.js", icon: Icons.KeyboardIcon, color: "from-green-700 to-teal-700" },
+  { id: "anim-textloop", name: "Text Loop", icon: Icons.RefreshCwIcon, color: "from-blue-800 to-purple-800" },
+  { id: "anim-randomreveal", name: "Matrix Text", icon: Icons.GridIcon, color: "from-green-800 to-emerald-800" },
+  
+  // Scroll y Reveal
+  { id: "anim-aos", name: "AOS", icon: Icons.ArrowUpIcon, color: "from-indigo-600 to-blue-600" },
+  { id: "anim-scrollrevealjs", name: "ScrollReveal", icon: Icons.SparklesIcon, color: "from-cyan-600 to-teal-600" },
+  { id: "anim-awesomereveal", name: "Awesome Reveal", icon: Icons.ZapIcon, color: "from-yellow-700 to-amber-700" },
+  { id: "anim-waypoint", name: "Waypoint", icon: Icons.MapPinIcon, color: "from-red-700 to-pink-700" },
+  { id: "anim-locomotive", name: "Locomotive", icon: Icons.MoveIcon, color: "from-gray-700 to-slate-700" },
+  { id: "anim-lenis", name: "Lenis Scroll", icon: Icons.MousePointerIcon, color: "from-purple-800 to-indigo-800" },
+  
+  // Efectos Especiales
+  { id: "anim-marquee", name: "Marquee", icon: Icons.MoveIcon, color: "from-cyan-500 to-blue-500" },
+  { id: "anim-floating", name: "Floating", icon: Icons.CircleIcon, color: "from-indigo-500 to-purple-500" },
   { id: "anim-magnetic", name: "Magnetic", icon: Icons.MagnetIcon, color: "from-red-500 to-pink-500" },
   { id: "anim-glitch", name: "Glitch", icon: Icons.ZapIcon, color: "from-gray-500 to-slate-500" },
-  { id: "anim-scrollreveal", name: "Scroll Reveal", icon: Icons.ArrowUpIcon, color: "from-blue-600 to-indigo-600" }
+  { id: "anim-wavetext", name: "Wave Text", icon: Icons.WavesIcon, color: "from-teal-500 to-cyan-500" },
+  { id: "anim-confetti", name: "Confetti", icon: Icons.SparklesIcon, color: "from-yellow-800 to-orange-800" },
+  { id: "anim-particles", name: "Particles", icon: Icons.CircleIcon, color: "from-blue-900 to-indigo-900" },
+  
+  // Transiciones
+  { id: "anim-transition", name: "Transitions", icon: Icons.ArrowDownIcon, color: "from-green-800 to-emerald-800" },
+  { id: "anim-flipmove", name: "Flip Move", icon: Icons.FlipHorizontalIcon, color: "from-orange-700 to-red-700" },
+  { id: "anim-height", name: "Height", icon: Icons.ArrowUpIcon, color: "from-teal-700 to-cyan-700" },
+  { id: "anim-headroom", name: "Headroom", icon: Icons.ArrowUpIcon, color: "from-violet-700 to-purple-700" },
+  
+  // Lottie y Rive
+  { id: "anim-lottie", name: "Lottie", icon: Icons.PlayIcon, color: "from-pink-700 to-rose-700" },
+  { id: "anim-rive", name: "Rive", icon: Icons.PlayIcon, color: "from-indigo-800 to-blue-800" },
+  { id: "anim-useanimations", name: "UseAnimations", icon: Icons.SparklesIcon, color: "from-amber-700 to-yellow-700" }
 ]
 
 interface FolderItem {
