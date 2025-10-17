@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
 import * as Icons from "@/components/icons"
 
 interface ComponentProps {
@@ -260,7 +259,7 @@ export function renderTemplateComponents(type: string, { props, getEffectClasses
                 <Icons.StarIcon key={star} className="w-4 h-4 text-yellow-400 fill-current" />
               ))}
             </div>
-            <p className="text-sm mb-4">&quot;Excelente servicio, muy recomendado. La atención al cliente es excepcional.&quot;</p>
+            <p className="text-sm mb-4">'Excelente servicio, muy recomendado. La atención al cliente es excepcional.'</p>
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">
                 M
