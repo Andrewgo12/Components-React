@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
+import { motion } from 'framer-motion'
 
 import { cn } from '@/lib/utils'
 
@@ -29,10 +30,52 @@ function Badge({
   className,
   variant,
   asChild = false,
+  animation,
   ...props
 }: React.ComponentProps<'span'> &
-  VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
+  VariantProps<typeof badgeVariants> & { 
+    asChild?: boolean
+    animation?: 'pulse' | 'bounce' | 'scale' | 'glow'
+  }) {
   const Comp = asChild ? Slot : 'span'
+
+  const getAnimationProps = () => {
+    switch (animation) {
+      case 'pulse':
+        return {
+          animate: { scale: [1, 1.05, 1] },
+          transition: { duration: 2, repeat: Infinity }
+        }
+      case 'bounce':
+        return {
+          whileHover: { y: -2 },
+          transition: { type: "spring", stiffness: 400 }
+        }
+      case 'scale':
+        return {
+          whileHover: { scale: 1.1 },
+          transition: { duration: 0.2 }
+        }
+      case 'glow':
+        return {
+          whileHover: { boxShadow: "0 0 10px rgba(59, 130, 246, 0.5)" },
+          transition: { duration: 0.2 }
+        }
+      default:
+        return {}
+    }
+  }
+
+  if (animation) {
+    return (
+      <motion.span
+        data-slot="badge"
+        className={cn(badgeVariants({ variant }), className)}
+        {...getAnimationProps()}
+        {...props}
+      />
+    )
+  }
 
   return (
     <Comp
