@@ -3,9 +3,9 @@
 import * as React from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { XIcon } from 'lucide-react'
-
 import { cn } from '@/lib/utils'
 
+// Componente base del Dialog
 function Dialog({
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Root>) {
@@ -38,7 +38,7 @@ function DialogOverlay({
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
       className={cn(
-        'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50',
+        'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/60 backdrop-blur-sm',
         className,
       )}
       {...props}
@@ -46,33 +46,59 @@ function DialogOverlay({
   )
 }
 
+/**
+ * DialogContent adaptativo con soporte de pantalla completa
+ *
+ * Props:
+ * - showCloseButton?: boolean (por defecto true)
+ * - fullScreen?: boolean (si es true, ocupa toda la pantalla)
+ */
 function DialogContent({
   className,
   children,
   showCloseButton = true,
+  fullScreen = false,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean
+  fullScreen?: boolean
 }) {
   return (
     <DialogPortal data-slot="dialog-portal">
       <DialogOverlay />
+
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          'bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border p-6 shadow-lg duration-200 sm:max-w-lg',
+          // 🔧 Posición base
+          'fixed top-1/2 left-1/2 z-50 grid translate-x-[-50%] translate-y-[-50%] rounded-lg border shadow-xl bg-background overflow-hidden duration-200',
+
+          // 🔧 Animaciones
+          'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
+
+          // 🔧 Tamaño adaptable o pantalla completa
+          fullScreen
+            ? 'w-[100vw] h-[100vh] max-w-none max-h-none rounded-none'
+            : 'max-w-[95vw] max-h-[95vh] w-auto h-auto sm:max-w-[90vw] md:max-w-[85vw] lg:max-w-[80vw] xl:max-w-[75vw]',
+
+          // 🔧 Padding solo si no es full screen
+          !fullScreen && 'p-4 sm:p-6',
+
           className,
         )}
         {...props}
       >
-        {children}
+        <div className={cn(!fullScreen && 'overflow-auto max-h-[90vh]')}>
+          {children}
+        </div>
+
         {showCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"
-            className="ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+            className="absolute top-4 right-4 rounded-md opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none disabled:pointer-events-none"
           >
-            <XIcon />
-            <span className="sr-only">Close</span>
+            <XIcon className="size-5" />
+            <span className="sr-only">Cerrar</span>
           </DialogPrimitive.Close>
         )}
       </DialogPrimitive.Content>
@@ -129,15 +155,16 @@ function DialogDescription({
   )
 }
 
+// ✅ Exportaciones finales
 export {
   Dialog,
-  DialogClose,
+  DialogTrigger,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
   DialogOverlay,
   DialogPortal,
+  DialogClose,
+  DialogHeader,
+  DialogFooter,
   DialogTitle,
-  DialogTrigger,
+  DialogDescription,
 }

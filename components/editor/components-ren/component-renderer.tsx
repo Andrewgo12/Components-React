@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, memo } from 'react'
+import React, { memo } from 'react'
 import { renderBasicComponents } from './basicos'
 import { renderMagicUIComponents } from './magic-ui'
 import { renderBackgroundComponents } from './fondos'
@@ -8,7 +8,6 @@ import { renderTemplateComponents } from './templates'
 import { renderEffectComponents } from './efectos'
 import { ComponentWrapper } from './component-wrapper'
 import * as Icons from '@/components/icons'
-import { AdvancedEditor } from '../advanced-editor'
 
 interface ComponentProps {
   props: any
@@ -70,8 +69,6 @@ export function renderAllComponents(type: string, componentProps: ComponentProps
 }
 
 function ComponentRendererInner({ component, isSelected, onSelect, onDelete, onUpdate, mode }: ComponentRendererProps) {
-  const [isEditorOpen, setIsEditorOpen] = useState(false)
-
   const getEffectClasses = () => {
     if (!component.effects) return ''
     
@@ -142,67 +139,68 @@ function ComponentRendererInner({ component, isSelected, onSelect, onDelete, onU
 
   const renderedComponent = renderAllComponents(component.type, componentProps)
 
-  const handleDoubleClick = (e: React.MouseEvent) => {
-    if (mode === 'design') {
-      e.stopPropagation()
-      setIsEditorOpen(true)
-    }
-  }
-
-  const handleUpdateComponent = (componentId: string, updates: any) => {
-    if (onUpdate) {
-      onUpdate(componentId, updates)
-    }
-  }
-
   return (
     <>
       <div
         className={`relative group transition-all duration-200 ${
-          isSelected ? 'ring-2 ring-primary ring-offset-2' : ''
+          isSelected ? 'ring-2 ring-primary ring-offset-2 shadow-lg' : 'hover:ring-1 hover:ring-primary/30'
         }`}
         style={{
           width: component.props?.width ? `${component.props.width}px` : 'auto',
           height: component.props?.height ? `${component.props.height}px` : 'auto',
           display: 'flex',
           alignItems: 'stretch',
-          justifyContent: 'stretch'
+          justifyContent: 'stretch',
+          cursor: mode === 'design' ? 'pointer' : 'default'
         }}
         onClick={(e) => {
           e.stopPropagation()
           onSelect()
         }}
-        onDoubleClick={handleDoubleClick}
-        title={mode === 'design' ? 'Doble clic para editar' : ''}
+        title={mode === 'design' ? 'Clic para seleccionar - Edita en el Inspector' : ''}
       >
         <div style={{ width: '100%', height: '100%', display: 'flex' }}>
           {renderedComponent}
         </div>
         
+        {/* Badges y controles cuando está seleccionado */}
         {isSelected && mode === 'design' && (
-          <div className="absolute -top-2 -right-2 flex gap-1">
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                onDelete()
-              }}
-              className="w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
-            >
-              <Icons.XIcon className="w-3 h-3" />
-            </button>
-          </div>
+          <>
+            {/* Badge superior izquierdo con nombre del componente */}
+            <div className="absolute -top-8 left-0 bg-primary text-primary-foreground px-2 py-1 rounded-t text-xs font-semibold shadow-md flex items-center gap-2">
+              <span>{component.name || component.type}</span>
+              <span className="opacity-60">•</span>
+              <span className="opacity-80 text-[10px]">Edita en el Inspector →</span>
+            </div>
+
+            {/* Controles superiores derechos */}
+            <div className="absolute -top-2 -right-2 flex gap-1">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onDelete()
+                }}
+                className="w-7 h-7 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-colors shadow-lg"
+                title="Eliminar"
+              >
+                <Icons.XIcon className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* Dimensiones en la esquina inferior derecha */}
+            {(component.props?.width || component.props?.height) && (
+              <div className="absolute -bottom-6 right-0 bg-muted text-muted-foreground px-2 py-1 rounded-b text-[10px] font-mono shadow-sm">
+                {component.props?.width || 'auto'} × {component.props?.height || 'auto'}
+              </div>
+            )}
+          </>
+        )}
+
+        {/* Indicador de hover cuando NO está seleccionado */}
+        {!isSelected && mode === 'design' && (
+          <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded" />
         )}
       </div>
-
-      {/* Editor Avanzado */}
-      {onUpdate && (
-        <AdvancedEditor
-          component={component}
-          isOpen={isEditorOpen}
-          onClose={() => setIsEditorOpen(false)}
-          onUpdate={handleUpdateComponent}
-        />
-      )}
     </>
   )
 }

@@ -92,31 +92,36 @@ export function Canvas({
       </div>
 
       <div className="flex-1 overflow-auto p-4 relative">
-        {showGrid && (
-          <div
-            className="absolute inset-0 opacity-20"
-            style={{
-              backgroundImage: `
-                linear-gradient(to right, oklch(0.90 0 0) 1px, transparent 1px),
-                linear-gradient(to bottom, oklch(0.90 0 0) 1px, transparent 1px)
-              `,
-              backgroundSize: "16px 16px",
-            }}
-          />
-        )}
+        <div
+          className="relative min-h-full"
+          style={{
+            width: `${100 / (zoom / 100)}%`,
+            height: `${100 / (zoom / 100)}%`,
+          }}
+        >
+          {showGrid && (
+            <div
+              className="absolute inset-0 opacity-20 pointer-events-none"
+              style={{
+                backgroundImage: `
+                  linear-gradient(to right, oklch(0.90 0 0) 1px, transparent 1px),
+                  linear-gradient(to bottom, oklch(0.90 0 0) 1px, transparent 1px)
+                `,
+                backgroundSize: `${16 * (zoom / 100)}px ${16 * (zoom / 100)}px`,
+              }}
+            />
+          )}
 
-        {
           <div
-            className="relative h-full bg-white dark:bg-card rounded-lg shadow-premium-lg p-4 animate-in fade-in zoom-in-95 duration-300 transition-transform"
+            className="relative w-full h-full bg-white dark:bg-card rounded-lg shadow-premium-lg p-4 animate-in fade-in zoom-in-95 duration-300"
             style={{ 
               transform: `scale(${zoom / 100})`, 
               transformOrigin: "top left",
-              width: "800px",
-              height: "600px"
+              minHeight: "600px"
             }}
           >
             <div 
-              className="relative w-full h-full min-h-[600px] transition-colors"
+              className="relative w-full h-full transition-colors"
               onDrop={handleDrop}
               onDragOver={handleDragOver}
               onClick={handleCanvasClick}
@@ -175,7 +180,7 @@ export function Canvas({
               )}
             </div>
           </div>
-        }
+        </div>
       </div>
     </div>
   )

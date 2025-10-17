@@ -8,6 +8,7 @@ import { Sun, Moon, Type, Palette, Box, Move, Sparkles, Code2 } from "lucide-rea
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import type { InspectorProps } from "@/types/component"
 import { CodeExporter } from "../code-exporter"
+import { AdvancedEditor } from "../advanced-editor"
 
 import { BasicControls } from "./basic-controls"
 import { TypographyControls } from "./typography-controls"
@@ -21,6 +22,7 @@ export function Inspector({ selectedComponent, onUpdateComponent }: InspectorPro
   const [activeTab, setActiveTab] = useState<string>("basics")
   const [theme, setTheme] = useState<"light" | "dark">("light")
   const [isCodeExporterOpen, setIsCodeExporterOpen] = useState(false)
+  const [isAdvancedEditorOpen, setIsAdvancedEditorOpen] = useState(false)
 
   const tabs = [
     { id: "basics", label: "Básicos", icon: Box },
@@ -100,6 +102,18 @@ export function Inspector({ selectedComponent, onUpdateComponent }: InspectorPro
           </div>
         </div>
         <p className="text-xs text-muted-foreground">{selectedComponent?.name || "Sin selección"}</p>
+        
+        {/* Botón Editor Visual Avanzado */}
+        {selectedComponent && (
+          <Button
+            onClick={() => setIsAdvancedEditorOpen(true)}
+            className="w-full mt-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg"
+            size="sm"
+          >
+            <Icons.SettingsIcon className="w-4 h-4 mr-2" />
+            ✨ Editor Visual Completo
+          </Button>
+        )}
       </div>
 
       {!selectedComponent ? (
@@ -205,6 +219,16 @@ export function Inspector({ selectedComponent, onUpdateComponent }: InspectorPro
           component={selectedComponent}
           isOpen={isCodeExporterOpen}
           onClose={() => setIsCodeExporterOpen(false)}
+        />
+      )}
+
+      {/* Advanced Editor Modal */}
+      {selectedComponent && (
+        <AdvancedEditor
+          component={selectedComponent}
+          isOpen={isAdvancedEditorOpen}
+          onClose={() => setIsAdvancedEditorOpen(false)}
+          onUpdate={onUpdateComponent}
         />
       )}
     </aside>
