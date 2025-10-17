@@ -6,6 +6,10 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { EditableText } from "../editable-text"
 import * as Icons from "@/components/icons"
+import { motion } from "framer-motion"
+import { useSpring, animated } from "@react-spring/web"
+import CountUp from "react-countup"
+import Marquee from "react-fast-marquee"
 
 interface ComponentProps {
   props: any
@@ -76,6 +80,8 @@ export function renderBasicComponents(type: string, { props, getEffectClasses, g
         <Button
           id={props.elementId}
           className={`relative overflow-hidden group ${props.className || ''} ${getEffectClasses()}`}
+          animation={props.animation || 'scale'}
+          variant={props.variant || 'animated'}
           style={{
             ...getEffectStyles(),
             ...effectStyles,
@@ -99,18 +105,6 @@ export function renderBasicComponents(type: string, { props, getEffectClasses, g
           }}
           disabled={props.disabled}
           title={props.title}
-          onMouseEnter={(e) => {
-            if (props.hoverScale) {
-              e.currentTarget.style.transform = `scale(${props.hoverScale})`
-            }
-            if (props.hoverBackgroundColor) {
-              e.currentTarget.style.backgroundColor = props.hoverBackgroundColor
-            }
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = effectStyles.transform || `scale(${props.scale || 1})`
-            e.currentTarget.style.backgroundColor = props.backgroundColor || 'var(--color-primary)'
-          }}
         >
           {/* Efecto Shimmer */}
           {!isDesign && props.effects?.shimmer?.enabled && (
@@ -207,6 +201,7 @@ export function renderBasicComponents(type: string, { props, getEffectClasses, g
               disabled={props.disabled}
               title={props.title}
               alt={props.alt}
+              animation={props.animation || 'glow'}
               style={{
                 ...inputEffectStyles,
                 fontSize: props.fontSize ? `${props.fontSize}px` : '16px',
@@ -254,6 +249,7 @@ export function renderBasicComponents(type: string, { props, getEffectClasses, g
       return (
         <Card
           className={`w-96 bg-white/90 backdrop-blur-sm border-0 shadow-xl ${isDesign ? '' : 'hover:shadow-2xl hover:scale-[1.02]'} transition-all ${isDesign ? 'duration-150' : 'duration-500'} rounded-3xl overflow-hidden group ${getEffectClasses()}`}
+          animation={props.animation || 'hover'}
           style={{
             ...getEffectStyles(),
             backgroundColor: props.backgroundColor,
@@ -333,6 +329,7 @@ export function renderBasicComponents(type: string, { props, getEffectClasses, g
         <div className={`inline-flex items-center gap-2 ${getEffectClasses()}`} style={getEffectStyles()}>
           <Badge 
             className="relative px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border-0 overflow-hidden group" 
+            animation={props.animation || 'pulse'}
             style={{
               fontSize: props.fontSize ? `${props.fontSize}px` : '14px',
               fontWeight: props.fontWeight || '600',
